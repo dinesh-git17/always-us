@@ -15,9 +15,8 @@ export const SWIPE_EDGE_ZONE = 20;
 
 /**
  * Maximum step index where backward navigation is disabled.
- * Users cannot swipe back from pages 0-7 to earlier pages.
- * This creates a one-way progression through the opening narrative
- * (Welcome -> Choice -> Beginning -> Intent -> Alignment -> Promises -> Everyday -> HardDays)
- * before allowing free navigation.
+ * Users cannot swipe back from page 1 ("We Chose Each Other") to page 0 (Welcome).
+ * This preserves the intro as a one-way entry point while allowing
+ * free navigation throughout the rest of the journey.
  */
-export const NO_BACK_UNTIL_STEP = 7;
+export const NO_BACK_UNTIL_STEP = 1;

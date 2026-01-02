@@ -4,12 +4,15 @@ import { AlignmentPage } from '@components/AlignmentPage';
 import { BeginningPage } from '@components/BeginningPage';
 import { BuildingPage } from '@components/BuildingPage';
 import { ChoicePage } from '@components/ChoicePage';
+import { EternalValidityPage } from '@components/EternalValidityPage';
 import { EverydayPage } from '@components/EverydayPage';
+import { FinalPage } from '@components/FinalPage';
 import { HardDaysPage } from '@components/HardDaysPage';
 import { IntentPage } from '@components/IntentPage';
 import { NonRefundablePage } from '@components/NonRefundablePage';
 import { Page } from '@components/Page';
 import { PromisesPage } from '@components/PromisesPage';
+import { SignaturesPage } from '@components/SignaturesPage';
 import { TrustPage } from '@components/TrustPage';
 import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
@@ -87,20 +90,20 @@ export const pageConfigs: PageConfig[] = [
   },
   {
     id: 'signatures',
-    title: 'Signatures',
-    subtitle: 'Sealing our commitment',
+    title: 'Signatures & Sealing',
+    subtitle: 'A moment held with intention.',
     testId: 'page-11',
   },
   {
-    id: 'celebration',
-    title: 'Celebration',
-    subtitle: 'The beginning of forever',
+    id: 'eternal-validity',
+    title: 'Eternal Validity',
+    subtitle: 'Without expiration. Without conditions.',
     testId: 'page-12',
   },
   {
     id: 'finale',
-    title: 'Forever Begins',
-    subtitle: 'The start of our next chapter',
+    title: 'Final Words',
+    subtitle: 'Where love is spoken, and meant.',
     testId: 'page-13',
   },
 ];
@@ -164,6 +167,21 @@ export function renderPages(): ReactElement[] {
     // Non-Refundable page ("The Non-Refundable Clause") uses playful smile animation timing
     if (config.id === 'non-refundable') {
       return <NonRefundablePage key={config.id} testId={config.testId} />;
+    }
+
+    // Signatures page ("Signatures & Sealing") uses reverent ceremonial animation timing
+    if (config.id === 'signatures') {
+      return <SignaturesPage key={config.id} testId={config.testId} />;
+    }
+
+    // Eternal Validity page ("Eternal Validity") uses gentle timeless animation timing
+    if (config.id === 'eternal-validity') {
+      return <EternalValidityPage key={config.id} testId={config.testId} />;
+    }
+
+    // Final page ("Final Words") uses the slowest finale animation timing
+    if (config.id === 'finale') {
+      return <FinalPage key={config.id} testId={config.testId} />;
     }
 
     return (

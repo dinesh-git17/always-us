@@ -278,6 +278,9 @@ src/
 │   ├── TrustPage/                   # Page 8: "Trust and Loyalty"
 │   ├── BuildingPage/                # Page 9: "What We're Building Together"
 │   ├── NonRefundablePage/           # Page 10: "The Non-Refundable Clause"
+│   ├── SignaturesPage/              # Page 11: "Signatures & Sealing"
+│   ├── EternalValidityPage/         # Page 12: "Eternal Validity"
+│   ├── FinalPage/                   # Page 13: "Final Words"
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
@@ -340,7 +343,7 @@ interface NavigationContext {
 **Navigation Constants** (`src/features/navigation/constants.ts`):
 
 - `TOTAL_STEPS = 14`
-- `NO_BACK_UNTIL_STEP = 7` — Backward navigation disabled for pages 0-7
+- `NO_BACK_UNTIL_STEP = 1` — Backward navigation disabled only from page 1 to page 0
 - `SWIPE_THRESHOLD_DISTANCE = 50` — Minimum swipe distance in pixels
 - `SWIPE_EDGE_ZONE = 20` — Edge zone where swipe is ignored (iOS back gesture)
 
@@ -380,19 +383,22 @@ export function renderPages(): ReactElement[] {
 
 **Animation Configs** (`src/lib/motion/motionVariants.ts`):
 
-| Config                  | Use Case           | Initial Delay | Stagger | Y Offset | Easing       |
-| ----------------------- | ------------------ | ------------- | ------- | -------- | ------------ |
-| `REASSURANCE_ANIMATION` | Most content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad  |
-| `VOW_ANIMATION`         | Page 5 (Promises)  | 0.3s          | 0.6s    | 10px     | easeOutQuad  |
-| `EVERYDAY_ANIMATION`    | Page 6 (Everyday)  | 0.2s          | 0.25s   | 10px     | easeOutSine  |
-| `ANCHOR_ANIMATION`      | Page 7 (Hard Days) | 0.3s          | 0.5s    | 10px     | easeOutCubic |
-| `FOUNDATION_ANIMATION`  | Page 8 (Trust)     | 0.3s          | 0.4s    | 8px      | easeOutQuad  |
-| `HORIZON_ANIMATION`     | Page 9 (Building)  | 0.3s          | 0.3s    | 12px     | easeOutCubic |
-| `SMILE_ANIMATION`       | Page 10 (Clause)   | 0.2s          | 0.2s    | 10px     | easeOutQuint |
-| `GROUNDING_ANIMATION`   | Legacy (unused)    | 0.3s          | 0.2s    | 20px     | easeOutQuart |
-| `UNFOLDING_ANIMATION`   | Legacy (unused)    | 0.2s          | 0.3s    | 10px     | easeOutCubic |
+| Config                  | Use Case           | Initial Delay | Stagger | Y Offset | Easing        |
+| ----------------------- | ------------------ | ------------- | ------- | -------- | ------------- |
+| `REASSURANCE_ANIMATION` | Most content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad   |
+| `VOW_ANIMATION`         | Page 5 (Promises)  | 0.3s          | 0.6s    | 10px     | easeOutQuad   |
+| `EVERYDAY_ANIMATION`    | Page 6 (Everyday)  | 0.2s          | 0.25s   | 10px     | easeOutSine   |
+| `ANCHOR_ANIMATION`      | Page 7 (Hard Days) | 0.3s          | 0.5s    | 10px     | easeOutCubic  |
+| `FOUNDATION_ANIMATION`  | Page 8 (Trust)     | 0.3s          | 0.4s    | 8px      | easeOutQuad   |
+| `HORIZON_ANIMATION`     | Page 9 (Building)  | 0.3s          | 0.3s    | 12px     | easeOutCubic  |
+| `SMILE_ANIMATION`       | Page 10 (Clause)   | 0.2s          | 0.2s    | 10px     | easeOutQuint  |
+| `CEREMONIAL_ANIMATION`  | Page 11 (Sealing)  | 0.5s          | 0.8s    | 8px      | easeInOutSine |
+| `TIMELESS_ANIMATION`    | Page 12 (Eternal)  | 0.4s          | 0.7s    | 5px      | easeInOutQuad |
+| `FINALE_ANIMATION`      | Page 13 (Final)    | 0.5s          | 0.8s    | 5px      | easeInOutSine |
+| `GROUNDING_ANIMATION`   | Legacy (unused)    | 0.3s          | 0.2s    | 20px     | easeOutQuart  |
+| `UNFOLDING_ANIMATION`   | Legacy (unused)    | 0.2s          | 0.3s    | 10px     | easeOutCubic  |
 
-> **Standard:** Most content pages use `REASSURANCE_ANIMATION`. Page 5 uses `VOW_ANIMATION` (0.6s stagger). Page 6 uses `EVERYDAY_ANIMATION` (fluid). Page 7 uses `ANCHOR_ANIMATION` (grounding). Page 8 uses `FOUNDATION_ANIMATION` (steady). Page 9 uses `HORIZON_ANIMATION` (optimistic). Page 10 uses `SMILE_ANIMATION` (playful, with closer beat).
+> **Standard:** Most content pages use `REASSURANCE_ANIMATION`. Page 5 uses `VOW_ANIMATION` (0.6s stagger). Page 6 uses `EVERYDAY_ANIMATION` (fluid). Page 7 uses `ANCHOR_ANIMATION` (grounding). Page 8 uses `FOUNDATION_ANIMATION` (steady). Page 9 uses `HORIZON_ANIMATION` (optimistic). Page 10 uses `SMILE_ANIMATION` (playful, with closer beat). Page 11 uses `CEREMONIAL_ANIMATION` (reverent, high-damping, with pause beat). Page 12 uses `TIMELESS_ANIMATION` (enduring, gentle drift). Page 13 uses `FINALE_ANIMATION` (slowest, final exhale, with signature beat).
 
 **Pre-built Variants:**
 
@@ -403,6 +409,9 @@ export function renderPages(): ReactElement[] {
 - `foundationTextVariants` — Steady reveal for trust/certainty pages (unwavering)
 - `horizonTextVariants` — Lifting reveal for future-focused pages (optimistic growth)
 - `smileTextVariants` — Crisp reveal for playful pages (decisive, snappy)
+- `ceremonialTextVariants` — Reverent reveal for sealing pages (high-damping, stillness)
+- `timelessTextVariants` — Enduring reveal for permanence pages (gentle drift, extended fade)
+- `finaleTextVariants` — Final exhale for conclusion page (slowest animation, meditative)
 - `fadeInVariants` — Simple opacity fade for UI elements
 - `standardTextVariants` — Legacy (grounding style)
 - `reflectiveTextVariants` — Legacy (unfolding style)
@@ -418,6 +427,11 @@ calculateFoundationDelay(elementIndex: number): number    // Page 8 (steady cert
 calculateHorizonDelay(elementIndex: number): number       // Page 9 (optimistic growth)
 calculateSmileDelay(elementIndex: number): number         // Page 10 (playful, fast)
 calculateSmileCloserDelay(elementIndex: number): number   // Page 10 closer (+0.4s beat)
+calculateCeremonialDelay(elementIndex: number): number    // Page 11 (reverent, slow)
+calculateCeremonialPauseDelay(elementIndex: number): number // Page 11 pause (+1.0s beat)
+calculateTimelessDelay(elementIndex: number): number       // Page 12 (enduring, gentle)
+calculateFinaleDelay(elementIndex: number): number         // Page 13 (slowest, meditative)
+calculateFinaleSignatureDelay(elementIndex: number): number // Page 13 signature (+1.5s beat)
 calculateStaggerDelay(elementIndex: number, config: AnimationConfig): number  // Generic
 calculateGroundingDelay(elementIndex: number): number     // Legacy
 calculateUnfoldingDelay(elementIndex: number): number     // Legacy
@@ -598,26 +612,32 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 - [x] Page 8: "Trust and Loyalty" (TrustPage) — Foundation animation (0.4s stagger, easeOutQuad), centered
 - [x] Page 9: "What We're Building Together" (BuildingPage) — Horizon animation (0.3s stagger, easeOutCubic), centered
 - [x] Page 10: "The Non-Refundable Clause" (NonRefundablePage) — Smile animation (0.2s stagger, easeOutQuint), centered, closer has +0.4s beat
+- [x] Page 11: "Signatures & Sealing" (SignaturesPage) — Ceremonial animation (0.8s stagger, easeInOutSine), centered, pause has +1.0s beat
+- [x] Page 12: "Eternal Validity" (EternalValidityPage) — Timeless animation (0.7s stagger, easeInOutQuad), centered
+- [x] Page 13: "Final Words" (FinalPage) — Finale animation (0.8s stagger, easeInOutSine), centered, signature has +1.5s beat
 
-**Remaining Pages (11-13):** Use generic `Page` component with placeholder content.
+**All pages implemented.**
 
 **Visual Consistency:**
 
-- Most content pages (1-4, 11-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
+- Most content pages (1-4) use `reassuranceTextVariants` and `calculateReassuranceDelay`
 - Page 5 (Promises) uses `vowTextVariants` and `calculateVowDelay` for slower delivery
 - Page 6 (Everyday) uses `everydayTextVariants` and `calculateEverydayDelay` for fluid flow
 - Page 7 (Hard Days) uses `anchorTextVariants` and `calculateAnchorDelay` for grounding
 - Page 8 (Trust) uses `foundationTextVariants` and `calculateFoundationDelay` for steady certainty
 - Page 9 (Building) uses `horizonTextVariants` and `calculateHorizonDelay` for optimistic growth
 - Page 10 (Clause) uses `smileTextVariants` with `calculateSmileCloserDelay` for final element beat
+- Page 11 (Sealing) uses `ceremonialTextVariants` with `calculateCeremonialPauseDelay` for final pause beat
+- Page 12 (Eternal) uses `timelessTextVariants` with `calculateTimelessDelay` for enduring permanence
+- Page 13 (Final) uses `finaleTextVariants` with `calculateFinaleSignatureDelay` for signature beat
 - All content pages use center-aligned text (title, subtitle, body)
 - Page 0 (Welcome) is unique with its own animation style
 - If prompt says otherwise or strays from consistency, stop and ask to confirm
 
 **Navigation Rules:**
 
-- Pages 0-7: Backward navigation disabled (one-way opening narrative)
-- Pages 8+: Full bidirectional navigation enabled
+- Page 0 → 1: Forward only (Welcome is one-way entry point)
+- Pages 1+: Full bidirectional navigation enabled
 
 ### 13.9 Documentation Maintenance
 

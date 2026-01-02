@@ -154,6 +154,57 @@ export const SMILE_ANIMATION: AnimationConfig = {
 export const SMILE_CLOSER_EXTRA_DELAY = 0.4;
 
 /**
+ * Animation timing constants for the "Ceremonial" entrance sequence.
+ * Used on Page 12 ("Signatures & Sealing") for a reverent, high-damping feel.
+ * Long durations and slow staggers suppress visual momentum, creating stillness.
+ * The final element receives additional delay to isolate the closing instruction.
+ */
+export const CEREMONIAL_ANIMATION: AnimationConfig = {
+  initialDelay: 0.5,
+  duration: 1.2,
+  paragraphStagger: 0.8,
+  titleSubtitleStagger: 0.15,
+  yOffset: 8,
+  ease: [0.37, 0, 0.63, 1], // easeInOutSine - very soft, no snap
+} as const;
+
+/** Additional delay added before the final "pause" element in Ceremonial animation */
+export const CEREMONIAL_PAUSE_EXTRA_DELAY = 1.0;
+
+/**
+ * Animation timing constants for the "Timeless" entrance sequence.
+ * Used on Page 13 ("Eternal Validity") for a gentle, enduring feel.
+ * Extended durations and soft easing create a sense of drift and permanence.
+ * Content feels like it "simply exists" rather than arriving with momentum.
+ */
+export const TIMELESS_ANIMATION: AnimationConfig = {
+  initialDelay: 0.4,
+  duration: 1.2,
+  paragraphStagger: 0.7,
+  titleSubtitleStagger: 0.15,
+  yOffset: 5,
+  ease: [0.46, 0.03, 0.52, 0.96], // easeInOutQuad - soft start, soft end
+} as const;
+
+/**
+ * Animation timing constants for the "Finale" entrance sequence.
+ * Used on Page 14 ("Final Words") for the emotional conclusion.
+ * The slowest animation in the app, forcing deliberate, meditative reading.
+ * Extended duration and slow stagger create a "final exhale" feeling.
+ */
+export const FINALE_ANIMATION: AnimationConfig = {
+  initialDelay: 0.5,
+  duration: 1.5,
+  paragraphStagger: 0.8,
+  titleSubtitleStagger: 0.15,
+  yOffset: 5,
+  ease: [0.37, 0, 0.63, 1], // easeInOutSine - no impact, just presence
+} as const;
+
+/** Additional delay added before the "signature" element in Finale animation */
+export const FINALE_SIGNATURE_EXTRA_DELAY = 1.5;
+
+/**
  * Easing curve for decelerating animations.
  * Creates smooth, decelerating stop for "settling" effect.
  */
@@ -256,6 +307,27 @@ export const horizonTextVariants: Variants = createTextVariants(HORIZON_ANIMATIO
  * Used for Page 10 ("The Non-Refundable Clause") to convey playful certainty.
  */
 export const smileTextVariants: Variants = createTextVariants(SMILE_ANIMATION);
+
+/**
+ * Ceremonial page text animation variants (Reverent, high-damping style).
+ * Very slow fade with minimal movement to create stillness and gravity.
+ * Used for Page 12 ("Signatures & Sealing") to force a contemplative pause.
+ */
+export const ceremonialTextVariants: Variants = createTextVariants(CEREMONIAL_ANIMATION);
+
+/**
+ * Timeless page text animation variants (Enduring, gentle drift style).
+ * Extended fade with barely perceptible movement to create permanence.
+ * Used for Page 13 ("Eternal Validity") to convey "forever" as a state of rest.
+ */
+export const timelessTextVariants: Variants = createTextVariants(TIMELESS_ANIMATION);
+
+/**
+ * Finale page text animation variants (Final exhale style).
+ * The slowest animation in the app with extended 1.5s fade duration.
+ * Used for Page 14 ("Final Words") as the emotional conclusion.
+ */
+export const finaleTextVariants: Variants = createTextVariants(FINALE_ANIMATION);
 
 /**
  * Fade-in variants for UI elements like progress indicators.
@@ -414,4 +486,64 @@ export function calculateSmileDelay(elementIndex: number): number {
  */
 export function calculateSmileCloserDelay(elementIndex: number): number {
   return calculateStaggerDelay(elementIndex, SMILE_ANIMATION) + SMILE_CLOSER_EXTRA_DELAY;
+}
+
+/**
+ * Calculates animation delay for a text element in the ceremonial sequence.
+ * Convenience wrapper using CEREMONIAL_ANIMATION config.
+ * Very slow stagger creates reverent, contemplative pacing for sealing content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateCeremonialDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, CEREMONIAL_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for the final "pause" element in the ceremonial sequence.
+ * Adds significant extra delay to isolate the closing instruction ("Take a breath here").
+ * Creates a moment of stillness before the final message appears.
+ *
+ * @param elementIndex - Zero-based index of the pause element
+ * @returns Delay in seconds (includes CEREMONIAL_PAUSE_EXTRA_DELAY)
+ */
+export function calculateCeremonialPauseDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, CEREMONIAL_ANIMATION) + CEREMONIAL_PAUSE_EXTRA_DELAY;
+}
+
+/**
+ * Calculates animation delay for a text element in the timeless sequence.
+ * Convenience wrapper using TIMELESS_ANIMATION config.
+ * Slow stagger creates enduring, unhurried pacing for permanence content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateTimelessDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, TIMELESS_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the finale sequence.
+ * Convenience wrapper using FINALE_ANIMATION config.
+ * The slowest stagger in the app creates meditative pacing for the conclusion.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateFinaleDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, FINALE_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for the "signature" element in the finale sequence.
+ * Adds significant extra delay to create a moment of silence before "Always us."
+ * The final thought appears after a deliberate pause, emphasizing finality.
+ *
+ * @param elementIndex - Zero-based index of the signature element
+ * @returns Delay in seconds (includes FINALE_SIGNATURE_EXTRA_DELAY)
+ */
+export function calculateFinaleSignatureDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, FINALE_ANIMATION) + FINALE_SIGNATURE_EXTRA_DELAY;
 }

@@ -1,0 +1,115 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+  /* Extended bottom padding for immersive viewport: safe area + space for control layer */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 120px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Title: Playfair Display, Primary Color, centered */
+.title {
+  margin: 0 0 var(--spacing-md) 0;
+  font-family: var(--font-family-serif);
+  font-size: 2rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+/* Subtitle: Inter, Muted Color, centered, slightly looser tracking */
+.subtitle {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  /* Generous gap for spacious, unhurried feel */
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* Body: Inter, centered */
+.body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.6;
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* Signature: Playfair Display, isolated with significant top margin */
+.signature {
+  margin: 0;
+  /* Significant top margin to isolate the signature from the promise block */
+  margin-top: 3rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-medium);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+/* Accessibility: respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .subtitle,
+  .body,
+  .signature {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Responsive adjustments for smaller devices (iPhone SE) */
+@media screen and (max-height: 667px) {
+  .page {
+    padding-top: var(--spacing-lg);
+  }
+
+  .header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .content {
+    gap: var(--spacing-lg);
+  }
+
+  .signature {
+    margin-top: 2rem;
+  }
+}
