@@ -2,12 +2,15 @@ import type { ReactElement } from 'react';
 
 import { AlignmentPage } from '@components/AlignmentPage';
 import { BeginningPage } from '@components/BeginningPage';
+import { BuildingPage } from '@components/BuildingPage';
 import { ChoicePage } from '@components/ChoicePage';
 import { EverydayPage } from '@components/EverydayPage';
 import { HardDaysPage } from '@components/HardDaysPage';
 import { IntentPage } from '@components/IntentPage';
+import { NonRefundablePage } from '@components/NonRefundablePage';
 import { Page } from '@components/Page';
 import { PromisesPage } from '@components/PromisesPage';
+import { TrustPage } from '@components/TrustPage';
 import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
 
@@ -65,39 +68,39 @@ export const pageConfigs: PageConfig[] = [
     testId: 'page-7',
   },
   {
-    id: 'commitments',
-    title: 'Commitments',
-    subtitle: 'What we promise to each other',
+    id: 'trust',
+    title: 'Trust and Loyalty',
+    subtitle: 'So you never have to question where you stand.',
     testId: 'page-8',
   },
   {
-    id: 'the-vows',
-    title: 'The Vows',
-    subtitle: 'Words from the heart',
+    id: 'building',
+    title: "What We're Building Together",
+    subtitle: 'A future shaped with intention and care.',
     testId: 'page-9',
   },
   {
-    id: 'promises',
-    title: 'Promises',
-    subtitle: 'Our sacred agreements',
+    id: 'non-refundable',
+    title: 'The Non-Refundable Clause',
+    subtitle: 'Chosen with intention. Kept with care.',
     testId: 'page-10',
-  },
-  {
-    id: 'witnesses',
-    title: 'Witnesses',
-    subtitle: 'Those who stand with us',
-    testId: 'page-11',
   },
   {
     id: 'signatures',
     title: 'Signatures',
     subtitle: 'Sealing our commitment',
-    testId: 'page-12',
+    testId: 'page-11',
   },
   {
     id: 'celebration',
     title: 'Celebration',
     subtitle: 'The beginning of forever',
+    testId: 'page-12',
+  },
+  {
+    id: 'finale',
+    title: 'Forever Begins',
+    subtitle: 'The start of our next chapter',
     testId: 'page-13',
   },
 ];
@@ -146,6 +149,21 @@ export function renderPages(): ReactElement[] {
     // Hard Days page ("On the Hard Days") uses grounding anchor animation timing
     if (config.id === 'hard-days') {
       return <HardDaysPage key={config.id} testId={config.testId} />;
+    }
+
+    // Trust page ("Trust and Loyalty") uses steady foundation animation timing
+    if (config.id === 'trust') {
+      return <TrustPage key={config.id} testId={config.testId} />;
+    }
+
+    // Building page ("What We're Building Together") uses optimistic horizon animation timing
+    if (config.id === 'building') {
+      return <BuildingPage key={config.id} testId={config.testId} />;
+    }
+
+    // Non-Refundable page ("The Non-Refundable Clause") uses playful smile animation timing
+    if (config.id === 'non-refundable') {
+      return <NonRefundablePage key={config.id} testId={config.testId} />;
     }
 
     return (

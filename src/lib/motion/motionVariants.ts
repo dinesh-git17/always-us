@@ -106,6 +106,54 @@ export const ANCHOR_ANIMATION: AnimationConfig = {
 } as const;
 
 /**
+ * Animation timing constants for the "Foundation" entrance sequence.
+ * Used on Page 8 ("Trust and Loyalty") for steady, unwavering presence.
+ * Medium stagger (0.4s) conveys composure and confidence.
+ * Lower Y offset (8px) minimizes flux, suggesting immovable stability.
+ */
+export const FOUNDATION_ANIMATION: AnimationConfig = {
+  initialDelay: 0.3,
+  duration: 0.8,
+  paragraphStagger: 0.4,
+  titleSubtitleStagger: 0.1,
+  yOffset: 8,
+  ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuad
+} as const;
+
+/**
+ * Animation timing constants for the "Horizon" entrance sequence.
+ * Used on Page 9 ("What We're Building Together") for optimistic forward motion.
+ * Faster stagger (0.3s) implies momentum and natural growth.
+ * Moderate Y offset (12px) creates gentle "lifting" effect suggesting hope.
+ */
+export const HORIZON_ANIMATION: AnimationConfig = {
+  initialDelay: 0.3,
+  duration: 0.8,
+  paragraphStagger: 0.3,
+  titleSubtitleStagger: 0.1,
+  yOffset: 12,
+  ease: [0.33, 1, 0.68, 1], // easeOutCubic
+} as const;
+
+/**
+ * Animation timing constants for the "Smile" entrance sequence.
+ * Used on Page 10 ("The Non-Refundable Clause") for playful, crisp certainty.
+ * Fast stagger (0.2s) creates conversational pace. Shorter duration (0.6s) feels decisive.
+ * The final "closer" element receives an additional delay for comedic/emotional timing.
+ */
+export const SMILE_ANIMATION: AnimationConfig = {
+  initialDelay: 0.2,
+  duration: 0.6,
+  paragraphStagger: 0.2,
+  titleSubtitleStagger: 0.1,
+  yOffset: 10,
+  ease: [0.22, 1, 0.36, 1], // easeOutQuint - decisive, snappy
+} as const;
+
+/** Additional delay added before the "closer" element in Smile animation */
+export const SMILE_CLOSER_EXTRA_DELAY = 0.4;
+
+/**
  * Easing curve for decelerating animations.
  * Creates smooth, decelerating stop for "settling" effect.
  */
@@ -187,6 +235,27 @@ export const everydayTextVariants: Variants = createTextVariants(EVERYDAY_ANIMAT
  * Used for Page 8 ("On the Hard Days") to convey stability and safety.
  */
 export const anchorTextVariants: Variants = createTextVariants(ANCHOR_ANIMATION);
+
+/**
+ * Foundation page text animation variants (Steady, unwavering style).
+ * Crisp fade with minimal movement for content about trust and loyalty.
+ * Used for Page 8 ("Trust and Loyalty") to convey certainty and permanence.
+ */
+export const foundationTextVariants: Variants = createTextVariants(FOUNDATION_ANIMATION);
+
+/**
+ * Horizon page text animation variants (Optimistic, forward-looking style).
+ * Gentle lift with fluid timing for content about building the future.
+ * Used for Page 9 ("What We're Building Together") to convey hope and growth.
+ */
+export const horizonTextVariants: Variants = createTextVariants(HORIZON_ANIMATION);
+
+/**
+ * Smile page text animation variants (Playful, decisive style).
+ * Crisp fade with snappy timing for lighthearted commitment content.
+ * Used for Page 10 ("The Non-Refundable Clause") to convey playful certainty.
+ */
+export const smileTextVariants: Variants = createTextVariants(SMILE_ANIMATION);
 
 /**
  * Fade-in variants for UI elements like progress indicators.
@@ -297,4 +366,52 @@ export function calculateEverydayDelay(elementIndex: number): number {
  */
 export function calculateAnchorDelay(elementIndex: number): number {
   return calculateStaggerDelay(elementIndex, ANCHOR_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the foundation sequence.
+ * Convenience wrapper using FOUNDATION_ANIMATION config.
+ * Steady stagger conveys composure and certainty for trust-based content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateFoundationDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, FOUNDATION_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the horizon sequence.
+ * Convenience wrapper using HORIZON_ANIMATION config.
+ * Fluid stagger conveys optimism and forward momentum for future-focused content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateHorizonDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, HORIZON_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the smile sequence.
+ * Convenience wrapper using SMILE_ANIMATION config.
+ * Fast stagger creates conversational, playful pace for lighthearted content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateSmileDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, SMILE_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for the "closer" element in the smile sequence.
+ * Adds an extra pause before the final punchline for comedic/emotional timing.
+ * Creates the "beat" that allows the previous content to land before the closer appears.
+ *
+ * @param elementIndex - Zero-based index of the closer element
+ * @returns Delay in seconds (includes SMILE_CLOSER_EXTRA_DELAY)
+ */
+export function calculateSmileCloserDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, SMILE_ANIMATION) + SMILE_CLOSER_EXTRA_DELAY;
 }

@@ -275,6 +275,9 @@ src/
 │   ├── HardDaysPage/                # Page 8: "On the Hard Days"
 │   ├── IntentPage/                  # Page 4: "Why I Made This"
 │   ├── PromisesPage/                # Page 6: "What I Promise You"
+│   ├── TrustPage/                   # Page 8: "Trust and Loyalty"
+│   ├── BuildingPage/                # Page 9: "What We're Building Together"
+│   ├── NonRefundablePage/           # Page 10: "The Non-Refundable Clause"
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
@@ -380,13 +383,16 @@ export function renderPages(): ReactElement[] {
 | Config                  | Use Case           | Initial Delay | Stagger | Y Offset | Easing       |
 | ----------------------- | ------------------ | ------------- | ------- | -------- | ------------ |
 | `REASSURANCE_ANIMATION` | Most content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad  |
-| `VOW_ANIMATION`         | Page 6 (Promises)  | 0.3s          | 0.6s    | 10px     | easeOutQuad  |
-| `EVERYDAY_ANIMATION`    | Page 7 (Everyday)  | 0.2s          | 0.25s   | 10px     | easeOutSine  |
-| `ANCHOR_ANIMATION`      | Page 8 (Hard Days) | 0.3s          | 0.5s    | 10px     | easeOutCubic |
+| `VOW_ANIMATION`         | Page 5 (Promises)  | 0.3s          | 0.6s    | 10px     | easeOutQuad  |
+| `EVERYDAY_ANIMATION`    | Page 6 (Everyday)  | 0.2s          | 0.25s   | 10px     | easeOutSine  |
+| `ANCHOR_ANIMATION`      | Page 7 (Hard Days) | 0.3s          | 0.5s    | 10px     | easeOutCubic |
+| `FOUNDATION_ANIMATION`  | Page 8 (Trust)     | 0.3s          | 0.4s    | 8px      | easeOutQuad  |
+| `HORIZON_ANIMATION`     | Page 9 (Building)  | 0.3s          | 0.3s    | 12px     | easeOutCubic |
+| `SMILE_ANIMATION`       | Page 10 (Clause)   | 0.2s          | 0.2s    | 10px     | easeOutQuint |
 | `GROUNDING_ANIMATION`   | Legacy (unused)    | 0.3s          | 0.2s    | 20px     | easeOutQuart |
 | `UNFOLDING_ANIMATION`   | Legacy (unused)    | 0.2s          | 0.3s    | 10px     | easeOutCubic |
 
-> **Standard:** Most content pages use `REASSURANCE_ANIMATION`. Page 6 uses `VOW_ANIMATION` (0.6s stagger). Page 7 uses `EVERYDAY_ANIMATION` (fluid). Page 8 uses `ANCHOR_ANIMATION` (grounding).
+> **Standard:** Most content pages use `REASSURANCE_ANIMATION`. Page 5 uses `VOW_ANIMATION` (0.6s stagger). Page 6 uses `EVERYDAY_ANIMATION` (fluid). Page 7 uses `ANCHOR_ANIMATION` (grounding). Page 8 uses `FOUNDATION_ANIMATION` (steady). Page 9 uses `HORIZON_ANIMATION` (optimistic). Page 10 uses `SMILE_ANIMATION` (playful, with closer beat).
 
 **Pre-built Variants:**
 
@@ -394,6 +400,9 @@ export function renderPages(): ReactElement[] {
 - `vowTextVariants` — Slower reveal for promise pages (deliberate delivery)
 - `everydayTextVariants` — Fluid reveal for daily presence pages (continuous flow)
 - `anchorTextVariants` — Grounding reveal for emotionally heavy pages (stability)
+- `foundationTextVariants` — Steady reveal for trust/certainty pages (unwavering)
+- `horizonTextVariants` — Lifting reveal for future-focused pages (optimistic growth)
+- `smileTextVariants` — Crisp reveal for playful pages (decisive, snappy)
 - `fadeInVariants` — Simple opacity fade for UI elements
 - `standardTextVariants` — Legacy (grounding style)
 - `reflectiveTextVariants` — Legacy (unfolding style)
@@ -401,13 +410,17 @@ export function renderPages(): ReactElement[] {
 **Delay Calculators:**
 
 ```typescript
-calculateReassuranceDelay(elementIndex: number): number  // Standard for most content pages
-calculateVowDelay(elementIndex: number): number          // Page 6 (slower stagger)
-calculateEverydayDelay(elementIndex: number): number     // Page 7 (fluid flow)
-calculateAnchorDelay(elementIndex: number): number       // Page 8 (grounding)
+calculateReassuranceDelay(elementIndex: number): number   // Standard for most content pages
+calculateVowDelay(elementIndex: number): number           // Page 5 (slower stagger)
+calculateEverydayDelay(elementIndex: number): number      // Page 6 (fluid flow)
+calculateAnchorDelay(elementIndex: number): number        // Page 7 (grounding)
+calculateFoundationDelay(elementIndex: number): number    // Page 8 (steady certainty)
+calculateHorizonDelay(elementIndex: number): number       // Page 9 (optimistic growth)
+calculateSmileDelay(elementIndex: number): number         // Page 10 (playful, fast)
+calculateSmileCloserDelay(elementIndex: number): number   // Page 10 closer (+0.4s beat)
 calculateStaggerDelay(elementIndex: number, config: AnimationConfig): number  // Generic
-calculateGroundingDelay(elementIndex: number): number    // Legacy
-calculateUnfoldingDelay(elementIndex: number): number    // Legacy
+calculateGroundingDelay(elementIndex: number): number     // Legacy
+calculateUnfoldingDelay(elementIndex: number): number     // Legacy
 ```
 
 **Creating Custom Variants:**
@@ -582,15 +595,21 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 - [x] Page 5: "What I Promise You" (PromisesPage) — Vow animation (0.6s stagger), centered
 - [x] Page 6: "How I Show Up Every Day" (EverydayPage) — Everyday animation (0.25s stagger, easeOutSine), centered
 - [x] Page 7: "On the Hard Days" (HardDaysPage) — Anchor animation (0.5s stagger, easeOutCubic), centered
+- [x] Page 8: "Trust and Loyalty" (TrustPage) — Foundation animation (0.4s stagger, easeOutQuad), centered
+- [x] Page 9: "What We're Building Together" (BuildingPage) — Horizon animation (0.3s stagger, easeOutCubic), centered
+- [x] Page 10: "The Non-Refundable Clause" (NonRefundablePage) — Smile animation (0.2s stagger, easeOutQuint), centered, closer has +0.4s beat
 
-**Remaining Pages (8-13):** Use generic `Page` component with placeholder content.
+**Remaining Pages (11-13):** Use generic `Page` component with placeholder content.
 
 **Visual Consistency:**
 
-- Most content pages (1-4, 8-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
+- Most content pages (1-4, 11-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
 - Page 5 (Promises) uses `vowTextVariants` and `calculateVowDelay` for slower delivery
 - Page 6 (Everyday) uses `everydayTextVariants` and `calculateEverydayDelay` for fluid flow
 - Page 7 (Hard Days) uses `anchorTextVariants` and `calculateAnchorDelay` for grounding
+- Page 8 (Trust) uses `foundationTextVariants` and `calculateFoundationDelay` for steady certainty
+- Page 9 (Building) uses `horizonTextVariants` and `calculateHorizonDelay` for optimistic growth
+- Page 10 (Clause) uses `smileTextVariants` with `calculateSmileCloserDelay` for final element beat
 - All content pages use center-aligned text (title, subtitle, body)
 - Page 0 (Welcome) is unique with its own animation style
 - If prompt says otherwise or strays from consistency, stop and ask to confirm
