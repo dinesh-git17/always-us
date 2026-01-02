@@ -271,7 +271,10 @@ src/
 │   ├── BeginningPage/               # Page 3: "Where It All Began"
 │   ├── Button/                      # Primary button component
 │   ├── ChoicePage/                  # Page 2: "We Chose Each Other"
+│   ├── EverydayPage/                # Page 7: "How I Show Up Every Day"
+│   ├── HardDaysPage/                # Page 8: "On the Hard Days"
 │   ├── IntentPage/                  # Page 4: "Why I Made This"
+│   ├── PromisesPage/                # Page 6: "What I Promise You"
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
@@ -334,7 +337,7 @@ interface NavigationContext {
 **Navigation Constants** (`src/features/navigation/constants.ts`):
 
 - `TOTAL_STEPS = 14`
-- `NO_BACK_UNTIL_STEP = 2` — Backward navigation disabled for pages 0-2
+- `NO_BACK_UNTIL_STEP = 7` — Backward navigation disabled for pages 0-7
 - `SWIPE_THRESHOLD_DISTANCE = 50` — Minimum swipe distance in pixels
 - `SWIPE_EDGE_ZONE = 20` — Edge zone where swipe is ignored (iOS back gesture)
 
@@ -374,17 +377,23 @@ export function renderPages(): ReactElement[] {
 
 **Animation Configs** (`src/lib/motion/motionVariants.ts`):
 
-| Config                  | Use Case          | Initial Delay | Stagger | Y Offset | Easing       |
-| ----------------------- | ----------------- | ------------- | ------- | -------- | ------------ |
-| `REASSURANCE_ANIMATION` | All content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad  |
-| `GROUNDING_ANIMATION`   | Legacy (unused)   | 0.3s          | 0.2s    | 20px     | easeOutQuart |
-| `UNFOLDING_ANIMATION`   | Legacy (unused)   | 0.2s          | 0.3s    | 10px     | easeOutCubic |
+| Config                  | Use Case           | Initial Delay | Stagger | Y Offset | Easing       |
+| ----------------------- | ------------------ | ------------- | ------- | -------- | ------------ |
+| `REASSURANCE_ANIMATION` | Most content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad  |
+| `VOW_ANIMATION`         | Page 6 (Promises)  | 0.3s          | 0.6s    | 10px     | easeOutQuad  |
+| `EVERYDAY_ANIMATION`    | Page 7 (Everyday)  | 0.2s          | 0.25s   | 10px     | easeOutSine  |
+| `ANCHOR_ANIMATION`      | Page 8 (Hard Days) | 0.3s          | 0.5s    | 10px     | easeOutCubic |
+| `GROUNDING_ANIMATION`   | Legacy (unused)    | 0.3s          | 0.2s    | 20px     | easeOutQuart |
+| `UNFOLDING_ANIMATION`   | Legacy (unused)    | 0.2s          | 0.3s    | 10px     | easeOutCubic |
 
-> **Standard:** All content pages (Pages 1-13) use `REASSURANCE_ANIMATION` for consistent, calm pacing.
+> **Standard:** Most content pages use `REASSURANCE_ANIMATION`. Page 6 uses `VOW_ANIMATION` (0.6s stagger). Page 7 uses `EVERYDAY_ANIMATION` (fluid). Page 8 uses `ANCHOR_ANIMATION` (grounding).
 
 **Pre-built Variants:**
 
-- `reassuranceTextVariants` — Standard for all content pages (calm, grounded)
+- `reassuranceTextVariants` — Standard for most content pages (calm, grounded)
+- `vowTextVariants` — Slower reveal for promise pages (deliberate delivery)
+- `everydayTextVariants` — Fluid reveal for daily presence pages (continuous flow)
+- `anchorTextVariants` — Grounding reveal for emotionally heavy pages (stability)
 - `fadeInVariants` — Simple opacity fade for UI elements
 - `standardTextVariants` — Legacy (grounding style)
 - `reflectiveTextVariants` — Legacy (unfolding style)
@@ -392,7 +401,10 @@ export function renderPages(): ReactElement[] {
 **Delay Calculators:**
 
 ```typescript
-calculateReassuranceDelay(elementIndex: number): number  // Standard for all content pages
+calculateReassuranceDelay(elementIndex: number): number  // Standard for most content pages
+calculateVowDelay(elementIndex: number): number          // Page 6 (slower stagger)
+calculateEverydayDelay(elementIndex: number): number     // Page 7 (fluid flow)
+calculateAnchorDelay(elementIndex: number): number       // Page 8 (grounding)
 calculateStaggerDelay(elementIndex: number, config: AnimationConfig): number  // Generic
 calculateGroundingDelay(elementIndex: number): number    // Legacy
 calculateUnfoldingDelay(elementIndex: number): number    // Legacy
@@ -567,20 +579,26 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 - [x] Page 2: "Where It All Began" (BeginningPage) — Reassurance animation, centered
 - [x] Page 3: "Why I Made This" (IntentPage) — Reassurance animation, centered
 - [x] Page 4: "What This Means to Us" (AlignmentPage) — Reassurance animation, centered
+- [x] Page 5: "What I Promise You" (PromisesPage) — Vow animation (0.6s stagger), centered
+- [x] Page 6: "How I Show Up Every Day" (EverydayPage) — Everyday animation (0.25s stagger, easeOutSine), centered
+- [x] Page 7: "On the Hard Days" (HardDaysPage) — Anchor animation (0.5s stagger, easeOutCubic), centered
 
-**Remaining Pages (5-13):** Use generic `Page` component with placeholder content.
+**Remaining Pages (8-13):** Use generic `Page` component with placeholder content.
 
 **Visual Consistency:**
 
-- All content pages (1-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
+- Most content pages (1-4, 8-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
+- Page 5 (Promises) uses `vowTextVariants` and `calculateVowDelay` for slower delivery
+- Page 6 (Everyday) uses `everydayTextVariants` and `calculateEverydayDelay` for fluid flow
+- Page 7 (Hard Days) uses `anchorTextVariants` and `calculateAnchorDelay` for grounding
 - All content pages use center-aligned text (title, subtitle, body)
 - Page 0 (Welcome) is unique with its own animation style
 - If prompt says otherwise or strays from consistency, stop and ask to confirm
 
 **Navigation Rules:**
 
-- Pages 0-4: Backward navigation disabled (one-way opening narrative)
-- Pages 5+: Full bidirectional navigation enabled
+- Pages 0-7: Backward navigation disabled (one-way opening narrative)
+- Pages 8+: Full bidirectional navigation enabled
 
 ### 13.9 Documentation Maintenance
 

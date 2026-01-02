@@ -3,8 +3,11 @@ import type { ReactElement } from 'react';
 import { AlignmentPage } from '@components/AlignmentPage';
 import { BeginningPage } from '@components/BeginningPage';
 import { ChoicePage } from '@components/ChoicePage';
+import { EverydayPage } from '@components/EverydayPage';
+import { HardDaysPage } from '@components/HardDaysPage';
 import { IntentPage } from '@components/IntentPage';
 import { Page } from '@components/Page';
+import { PromisesPage } from '@components/PromisesPage';
 import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
 
@@ -44,21 +47,21 @@ export const pageConfigs: PageConfig[] = [
     testId: 'page-4',
   },
   {
-    id: 'our-traditions',
-    title: 'Our Traditions',
-    subtitle: 'The rituals that define us',
+    id: 'promises',
+    title: 'What I Promise You',
+    subtitle: 'Spoken with care, and meant deeply.',
     testId: 'page-5',
   },
   {
-    id: 'dreams-together',
-    title: 'Dreams Together',
-    subtitle: 'Where we see ourselves',
+    id: 'everyday',
+    title: 'How I Show Up Every Day',
+    subtitle: 'In the small moments that matter most.',
     testId: 'page-6',
   },
   {
-    id: 'love-languages',
-    title: 'Love Languages',
-    subtitle: 'How we show we care',
+    id: 'hard-days',
+    title: 'On the Hard Days',
+    subtitle: 'When things feel heavy, you are not alone.',
     testId: 'page-7',
   },
   {
@@ -128,6 +131,21 @@ export function renderPages(): ReactElement[] {
     // Alignment page ("What This Means to Us") uses reassurance animation timing
     if (config.id === 'alignment') {
       return <AlignmentPage key={config.id} testId={config.testId} />;
+    }
+
+    // Promises page ("What I Promise You") uses slower vow animation timing
+    if (config.id === 'promises') {
+      return <PromisesPage key={config.id} testId={config.testId} />;
+    }
+
+    // Everyday page ("How I Show Up Every Day") uses fluid everyday animation timing
+    if (config.id === 'everyday') {
+      return <EverydayPage key={config.id} testId={config.testId} />;
+    }
+
+    // Hard Days page ("On the Hard Days") uses grounding anchor animation timing
+    if (config.id === 'hard-days') {
+      return <HardDaysPage key={config.id} testId={config.testId} />;
     }
 
     return (

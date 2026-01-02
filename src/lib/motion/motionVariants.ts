@@ -61,6 +61,51 @@ export const REASSURANCE_ANIMATION: AnimationConfig = {
 } as const;
 
 /**
+ * Animation timing constants for the "Vow" entrance sequence.
+ * Used on Page 6 ("What I Promise You") for deliberate delivery.
+ * Significantly slower stagger (0.6s) forces slow reading pace for each promise.
+ * Each promise appears as a distinct, thoughtful statement.
+ */
+export const VOW_ANIMATION: AnimationConfig = {
+  initialDelay: 0.3,
+  duration: 0.8,
+  paragraphStagger: 0.6,
+  titleSubtitleStagger: 0.1,
+  yOffset: 10,
+  ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuad
+} as const;
+
+/**
+ * Animation timing constants for the "Everyday" entrance sequence.
+ * Used on Page 7 ("How I Show Up Every Day") for fluid, continuous flow.
+ * Faster stagger (0.25s) with smooth easing suggests natural, frequent actions.
+ * Content flows in like a gentle stream rather than distinct, heavy statements.
+ */
+export const EVERYDAY_ANIMATION: AnimationConfig = {
+  initialDelay: 0.2,
+  duration: 0.6,
+  paragraphStagger: 0.25,
+  titleSubtitleStagger: 0.1,
+  yOffset: 10,
+  ease: [0.39, 0.575, 0.565, 1], // easeOutSine
+} as const;
+
+/**
+ * Animation timing constants for the "Anchor" entrance sequence.
+ * Used on Page 8 ("On the Hard Days") for grounding, protective feel.
+ * Slower stagger (0.5s) and longer duration create weight and stability.
+ * Content settles like an anchor, conveying "I am not going anywhere."
+ */
+export const ANCHOR_ANIMATION: AnimationConfig = {
+  initialDelay: 0.3,
+  duration: 0.8,
+  paragraphStagger: 0.5,
+  titleSubtitleStagger: 0.1,
+  yOffset: 10,
+  ease: [0.33, 1, 0.68, 1], // easeOutCubic
+} as const;
+
+/**
  * Easing curve for decelerating animations.
  * Creates smooth, decelerating stop for "settling" effect.
  */
@@ -121,6 +166,27 @@ export const reflectiveTextVariants: Variants = createTextVariants(UNFOLDING_ANI
  * Used for Page 4 ("Why I Made This") and similar reassuring pages.
  */
 export const reassuranceTextVariants: Variants = createTextVariants(REASSURANCE_ANIMATION);
+
+/**
+ * Vow page text animation variants (Deliberate delivery style).
+ * Significantly slower reveal for promise-based content.
+ * Used for Page 6 ("What I Promise You") to give each vow its own moment.
+ */
+export const vowTextVariants: Variants = createTextVariants(VOW_ANIMATION);
+
+/**
+ * Everyday page text animation variants (Continuous flow style).
+ * Faster, fluid reveal for content about daily presence.
+ * Used for Page 7 ("How I Show Up Every Day") to suggest natural, ongoing care.
+ */
+export const everydayTextVariants: Variants = createTextVariants(EVERYDAY_ANIMATION);
+
+/**
+ * Anchor page text animation variants (Grounding, protective style).
+ * Slower, heavier reveal for emotionally weighted content.
+ * Used for Page 8 ("On the Hard Days") to convey stability and safety.
+ */
+export const anchorTextVariants: Variants = createTextVariants(ANCHOR_ANIMATION);
 
 /**
  * Fade-in variants for UI elements like progress indicators.
@@ -195,4 +261,40 @@ export function calculateUnfoldingDelay(elementIndex: number): number {
  */
 export function calculateReassuranceDelay(elementIndex: number): number {
   return calculateStaggerDelay(elementIndex, REASSURANCE_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the vow sequence.
+ * Convenience wrapper using VOW_ANIMATION config.
+ * Slower stagger creates deliberate pacing for promise delivery.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateVowDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, VOW_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the everyday sequence.
+ * Convenience wrapper using EVERYDAY_ANIMATION config.
+ * Faster stagger creates fluid, continuous flow for daily presence content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateEverydayDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, EVERYDAY_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the anchor sequence.
+ * Convenience wrapper using ANCHOR_ANIMATION config.
+ * Slower stagger creates grounding, protective feel for emotionally heavy content.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateAnchorDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, ANCHOR_ANIMATION);
 }
