@@ -1,0 +1,140 @@
+.container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
+  /* Prevent iOS keyboard from pushing viewport */
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  width: 100%;
+  max-width: 320px;
+}
+
+.prompt {
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-primary);
+  text-align: center;
+  line-height: 1.3;
+  /* Optical alignment for serif */
+  margin-left: -0.03em;
+}
+
+.inputContainer {
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: var(--spacing-md) 0;
+  font-family: var(--font-family-serif);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-light);
+  font-style: italic;
+  color: var(--color-text);
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  caret-color: var(--color-primary);
+
+  /* Remove default styling */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+/* Underline that animates on focus */
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background-color: var(--color-border);
+  transition:
+    width 0.4s cubic-bezier(0.37, 0, 0.63, 1),
+    background-color 0.4s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.underline[data-focused='true'] {
+  width: 100%;
+  background-color: var(--color-primary);
+}
+
+.softPrompt {
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-light);
+  font-style: italic;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.submitHint {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-muted);
+  text-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  /* Touch target */
+  min-height: 44px;
+  min-width: 44px;
+
+  /* Remove default button styling */
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.submitHint:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Recognition greeting */
+.greeting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.greetingText {
+  font-family: var(--font-family-serif);
+  font-size: 2rem;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-primary);
+  text-align: center;
+  line-height: 1.3;
+}

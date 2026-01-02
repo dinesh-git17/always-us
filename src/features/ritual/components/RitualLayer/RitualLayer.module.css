@@ -1,0 +1,105 @@
+.layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  overflow: hidden;
+
+  /* Prevent text selection for app-like feel */
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* Prevent tap highlight */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Ensure smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ritual {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+}
+
+.appContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+/* Placeholder styles for development - will be removed */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.stepLabel {
+  font-family: var(--font-family-serif);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.devButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.devButton {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  cursor: pointer;
+  min-width: 200px;
+  min-height: 44px;
+}
+
+.devButton:active {
+  background-color: var(--color-primary-hover);
+}
+
+/* Threshold transition overlay */
+.thresholdOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-background);
+  z-index: 20;
+  pointer-events: none;
+}

@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base empty diamond */
+.dotEmpty {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--color-primary);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+/* Filled diamond overlay */
+.dotFilled {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-primary);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}

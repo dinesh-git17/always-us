@@ -297,6 +297,25 @@ src/
 │   │   ├── constants.ts              # TOTAL_STEPS, thresholds, NO_BACK_UNTIL_STEP
 │   │   ├── types.ts                  # JourneyState, NavigationContext, PageConfig
 │   │   └── index.ts                  # Public exports
+│   ├── ritual/
+│   │   ├── components/
+│   │   │   ├── RitualLayer/          # Root orchestrator, wraps AppShell
+│   │   │   ├── NameCapture/          # First-time: "Who is opening this?"
+│   │   │   ├── PasscodeSetup/        # First-time: Create + confirm passcode
+│   │   │   ├── PasscodeEntry/        # Returning: Enter passcode
+│   │   │   ├── PasscodeDot/          # Single dot with liquid fill animation
+│   │   │   ├── Keypad/               # 3x4 numeric keypad with haptics
+│   │   │   ├── BiometricEnroll/      # First-time: Face ID opt-in
+│   │   │   └── BiometricPrompt/      # Returning: Auto Face ID attempt
+│   │   ├── hooks/
+│   │   │   └── useBiometric.ts       # Capacitor biometric abstraction
+│   │   ├── store/ritualStore.ts      # Zustand store with persistence
+│   │   ├── utils/
+│   │   │   ├── nameNormalizer.ts     # "carolinaaaa" → "Carolina"
+│   │   │   └── passcodeHash.ts       # Simple hash for storage
+│   │   ├── constants.ts              # EXPECTED_NAME_PREFIX, timeouts
+│   │   ├── types.ts                  # RitualStep, RitualState
+│   │   └── index.ts                  # Public exports
 │   └── pages/
 │       └── pages.tsx                 # Page registry and renderPages()
 ├── hooks/

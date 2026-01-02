@@ -1,0 +1,72 @@
+.keypad {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+  max-width: 280px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 56px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  /* Touch target - minimum 44x44pt */
+  min-width: 44px;
+  min-height: 44px;
+
+  /* Remove default button styling */
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key:hover:not(:disabled) {
+  background-color: rgba(139, 41, 66, 0.05);
+}
+
+.key:active:not(:disabled) {
+  background-color: rgba(139, 41, 66, 0.1);
+}
+
+.key:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.spacer {
+  width: 72px;
+  height: 56px;
+}
+
+.digit {
+  font-family: var(--font-family);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.backspaceIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-muted);
+}

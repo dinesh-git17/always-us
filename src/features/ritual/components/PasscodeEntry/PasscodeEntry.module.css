@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-xl);
+  /* Optical vertical centering - slightly above true center */
+  padding-bottom: calc(var(--spacing-xl) + 5vh);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2xl);
+  width: 100%;
+  max-width: 320px;
+}
+
+.prompt {
+  font-family: var(--font-family-serif);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-primary);
+  text-align: center;
+  line-height: 1.3;
+  min-height: 2em;
+  /* Optical alignment for serif */
+  margin-left: -0.03em;
+}
+
+.dots {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+}
+
+.keypadContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
