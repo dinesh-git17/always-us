@@ -1,0 +1,34 @@
+.container {
+  padding: var(--spacing-md) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+}
+
+.track {
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-background-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+
+  /* Slight glow effect for visibility */
+  box-shadow: 0 0 4px rgba(100, 108, 255, 0.3);
+}
+
+/* Ensure visibility on both light and dark backgrounds */
+@media (prefers-color-scheme: light) {
+  .track {
+    background-color: var(--color-background-light);
+  }
+
+  .bar {
+    box-shadow: 0 0 4px rgba(100, 108, 255, 0.2);
+  }
+}
