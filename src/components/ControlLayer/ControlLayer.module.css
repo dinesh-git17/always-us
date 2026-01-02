@@ -10,10 +10,10 @@
   position: absolute;
   bottom: 0;
   width: 20%;
-  height: 120px;
+  /* Hit area extends to very bottom of screen */
+  height: calc(env(safe-area-inset-bottom, 0px) + 80px);
   display: flex;
-  align-items: center;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--spacing-md));
+  align-items: flex-end;
   pointer-events: auto;
   background: transparent;
   border: none;
@@ -27,13 +27,15 @@
 
 .tapZoneLeft {
   left: 0;
-  padding-left: calc(env(safe-area-inset-left, 0px) + var(--spacing-md));
+  padding-left: calc(env(safe-area-inset-left, 0px) + var(--spacing-lg));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   justify-content: flex-start;
 }
 
 .tapZoneRight {
   right: 0;
-  padding-right: calc(env(safe-area-inset-right, 0px) + var(--spacing-md));
+  padding-right: calc(env(safe-area-inset-right, 0px) + var(--spacing-lg));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
   justify-content: flex-end;
 }
 
@@ -54,5 +56,4 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  opacity: 0.6;
 }

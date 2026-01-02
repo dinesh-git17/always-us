@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
 import { useNavigation } from '@features/navigation';
 
@@ -8,6 +8,31 @@ import styles from './ControlLayer.module.css';
 /** Duration in milliseconds before showing idle hint pulse */
 const IDLE_HINT_DELAY_MS = 5000;
 
+/** Heartbeat pulse animation for the Next arrow when idle */
+const pulseVariants: Variants = {
+  idle: {
+    scale: 1,
+    opacity: 0.6,
+  },
+  pulsing: {
+    scale: [1, 1.15, 1],
+    opacity: [0.6, 1, 0.6],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+/** Static state for the Back arrow */
+const staticVariants: Variants = {
+  visible: {
+    scale: 1,
+    opacity: 0.6,
+  },
+};
+
 export interface ControlLayerProps {
   /** Optional callback when navigation occurs */
   onNavigate?: (direction: 'next' | 'prev') => void;
@@ -15,42 +40,63 @@ export interface ControlLayerProps {
 
 /**
  * Transparent overlay providing subtle navigation hints and tap zones.
- * Displays chevron indicators that pulse after idle timeout.
+ * Displays chevron indicators with heartbeat pulse on Next arrow after idle timeout.
  */
 export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
   const { next, prev, canGoNext, canGoPrev } = useNavigation();
   const [isIdle, setIsIdle] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Reset idle timer on any interaction
+  // Reset idle timer and restart countdown
   const resetIdleTimer = useCallback((): void => {
     setIsIdle(false);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setIsIdle(true);
+    }, IDLE_HINT_DELAY_MS);
   }, []);
 
+  // Initialize idle timer and listen for global interactions
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Start initial timer
+    timerRef.current = setTimeout(() => {
       setIsIdle(true);
     }, IDLE_HINT_DELAY_MS);
 
-    return (): void => {
-      clearTimeout(timer);
+    // Reset on any user interaction
+    const handleInteraction = (): void => {
+      resetIdleTimer();
     };
-  }, [canGoNext, canGoPrev]);
+
+    window.addEventListener('touchstart', handleInteraction, { passive: true });
+    window.addEventListener('click', handleInteraction);
+
+    return (): void => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+    };
+  }, [resetIdleTimer]);
 
   const handleNextTap = useCallback((): void => {
     if (canGoNext) {
-      resetIdleTimer();
       next();
       onNavigate?.('next');
     }
-  }, [canGoNext, next, onNavigate, resetIdleTimer]);
+  }, [canGoNext, next, onNavigate]);
 
   const handlePrevTap = useCallback((): void => {
     if (canGoPrev) {
-      resetIdleTimer();
       prev();
       onNavigate?.('prev');
     }
-  }, [canGoPrev, prev, onNavigate, resetIdleTimer]);
+  }, [canGoPrev, prev, onNavigate]);
 
   return (
     <div className={styles.controlLayer} aria-hidden="true">
@@ -67,11 +113,7 @@ export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
             transition={{ duration: 0.2 }}
             aria-label="Go to previous page"
           >
-            <motion.span
-              className={styles.chevron}
-              animate={isIdle ? { opacity: [0.6, 0.8, 0.6] } : { opacity: 0.6 }}
-              transition={isIdle ? { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } : {}}
-            >
+            <motion.span className={styles.chevron} variants={staticVariants} animate="visible">
               <ChevronLeftIcon />
             </motion.span>
           </motion.button>
@@ -93,8 +135,8 @@ export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
           >
             <motion.span
               className={styles.chevron}
-              animate={isIdle ? { opacity: [0.6, 0.8, 0.6] } : { opacity: 0.6 }}
-              transition={isIdle ? { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } : {}}
+              variants={pulseVariants}
+              animate={isIdle ? 'pulsing' : 'idle'}
             >
               <ChevronRightIcon />
             </motion.span>
