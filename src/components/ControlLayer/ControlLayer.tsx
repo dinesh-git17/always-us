@@ -113,7 +113,12 @@ export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
             transition={{ duration: 0.2 }}
             aria-label="Go to previous page"
           >
-            <motion.span className={styles.chevron} variants={staticVariants} animate="visible">
+            <motion.span
+              className={styles.chevron}
+              variants={staticVariants}
+              animate="visible"
+              whileTap={{ scale: 0.85, opacity: 1 }}
+            >
               <ChevronLeftIcon />
             </motion.span>
           </motion.button>
@@ -137,6 +142,7 @@ export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
               className={styles.chevron}
               variants={pulseVariants}
               animate={isIdle ? 'pulsing' : 'idle'}
+              whileTap={{ scale: 0.85, opacity: 1 }}
             >
               <ChevronRightIcon />
             </motion.span>

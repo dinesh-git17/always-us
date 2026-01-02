@@ -23,6 +23,10 @@
   /* Touch target compliance: min 44x44pt */
   min-height: 44px;
   min-width: 44px;
+
+  /* Remove default mobile tap highlights */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .tapZoneLeft {
