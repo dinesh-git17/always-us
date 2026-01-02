@@ -28,14 +28,14 @@
 .tapZoneLeft {
   left: 0;
   padding-left: calc(env(safe-area-inset-left, 0px) + var(--spacing-lg));
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
   justify-content: flex-start;
 }
 
 .tapZoneRight {
   right: 0;
   padding-right: calc(env(safe-area-inset-right, 0px) + var(--spacing-lg));
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
   justify-content: flex-end;
 }
 
