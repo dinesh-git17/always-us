@@ -300,6 +300,7 @@ src/
 │   └── pages/
 │       └── pages.tsx                 # Page registry and renderPages()
 ├── hooks/
+│   ├── useBackgroundAudio.ts         # Ambient audio playback (triggers on page 1)
 │   ├── useBodyScrollLock.ts          # Prevents iOS rubber-band scrolling
 │   └── useSplashScreen.ts            # Capacitor splash screen lifecycle
 ├── lib/
@@ -674,6 +675,19 @@ The Epigraph system displays rotating romantic quotes at the bottom of specific 
 - **Timing:** Each page has a custom `epigraphDelay` calculated as (last element delay + animation duration + 0.3s buffer) to ensure quotes appear after page content finishes animating
 - **Typography:** Inter, Italic, Light weight (300), 0.75rem, muted color
 - **Session Persistence:** Quotes randomize on app launch but stay consistent during the session
+
+**Background Audio System:**
+
+The background audio system provides an ambient emotional undercurrent throughout the journey experience.
+
+- **Trigger:** Audio begins when user navigates from page 0 (Welcome) to page 1
+- **Fade-In:** Slow 4-second linear fade-in to prevent startling onset
+- **Volume:** Capped at 18% (sits behind user's internal monologue)
+- **Looping:** Seamless gapless playback enabled
+- **Lifecycle:** Pauses immediately on app background, resumes with 500ms fade on foreground
+- **Persistence:** Once started, continues playing even if user navigates back to page 0
+- **Asset:** `public/background-music.mp3`
+- **Hook:** `useBackgroundAudio` in `src/hooks/useBackgroundAudio.ts`
 
 ### 13.9 Documentation Maintenance
 

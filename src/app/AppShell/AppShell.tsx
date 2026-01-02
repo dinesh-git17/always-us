@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { useBackgroundAudio } from '@hooks/useBackgroundAudio';
 import { useBodyScrollLock } from '@hooks/useBodyScrollLock';
 import { useSplashScreen } from '@hooks/useSplashScreen';
 
@@ -25,6 +26,9 @@ export function AppShell({ header, children, overlay }: AppShellProps): ReactNod
 
   // Initialize splash screen lifecycle (hides after 2 seconds)
   useSplashScreen();
+
+  // Initialize ambient background audio (plays after leaving welcome page)
+  useBackgroundAudio();
 
   return (
     <div className={styles.shell}>
