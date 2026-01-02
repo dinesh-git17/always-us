@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-import { standardTextVariants, calculateGroundingDelay } from '@lib/motion';
+import { reassuranceTextVariants, calculateReassuranceDelay } from '@lib/motion';
 
 import styles from './ChoicePage.module.css';
 
@@ -24,8 +24,8 @@ export interface ChoicePageProps {
 /**
  * Page 2: "We Chose Each Other"
  *
- * Marks the beginning of the structured narrative with the "Grounding" animation.
- * Text settles into place to reinforce the concept of intentional choice.
+ * Marks the beginning of the structured narrative with calm, centered text.
+ * Uses the standard "Reassurance" animation for consistent pacing across pages.
  * Respects prefers-reduced-motion for accessibility.
  */
 export function ChoicePage({ testId = 'page-1' }: ChoicePageProps): ReactNode {
@@ -46,19 +46,19 @@ export function ChoicePage({ testId = 'page-1' }: ChoicePageProps): ReactNode {
         <header className={styles.header}>
           <motion.h1
             className={styles.title}
-            variants={standardTextVariants}
+            variants={reassuranceTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'}
             animate={animationState}
-            custom={calculateGroundingDelay(0)}
+            custom={calculateReassuranceDelay(0)}
           >
             {TITLE}
           </motion.h1>
           <motion.p
             className={styles.subtitle}
-            variants={standardTextVariants}
+            variants={reassuranceTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'}
             animate={animationState}
-            custom={calculateGroundingDelay(1)}
+            custom={calculateReassuranceDelay(1)}
           >
             {SUBTITLE}
           </motion.p>
@@ -69,10 +69,10 @@ export function ChoicePage({ testId = 'page-1' }: ChoicePageProps): ReactNode {
             <motion.p
               key={paragraph.slice(0, 20)}
               className={styles.body}
-              variants={standardTextVariants}
+              variants={reassuranceTextVariants}
               initial={shouldAnimate ? 'hidden' : 'visible'}
               animate={animationState}
-              custom={calculateGroundingDelay(index + 2)}
+              custom={calculateReassuranceDelay(index + 2)}
             >
               {paragraph}
             </motion.p>

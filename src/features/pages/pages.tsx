@@ -1,7 +1,9 @@
 import type { ReactElement } from 'react';
 
+import { AlignmentPage } from '@components/AlignmentPage';
 import { BeginningPage } from '@components/BeginningPage';
 import { ChoicePage } from '@components/ChoicePage';
+import { IntentPage } from '@components/IntentPage';
 import { Page } from '@components/Page';
 import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
@@ -30,15 +32,15 @@ export const pageConfigs: PageConfig[] = [
     testId: 'page-2',
   },
   {
-    id: 'first-meeting',
-    title: 'First Meeting',
-    subtitle: 'The moment everything changed',
+    id: 'intent',
+    title: 'Why I Made This',
+    subtitle: 'Because what we have deserves intention.',
     testId: 'page-3',
   },
   {
-    id: 'the-journey',
-    title: 'The Journey',
-    subtitle: 'Every step we took together',
+    id: 'alignment',
+    title: 'What This Means to Us',
+    subtitle: 'A shared understanding, held with care.',
     testId: 'page-4',
   },
   {
@@ -116,6 +118,16 @@ export function renderPages(): ReactElement[] {
     // Beginning page ("Where It All Began") uses reflective animation timing
     if (config.id === 'beginning') {
       return <BeginningPage key={config.id} testId={config.testId} />;
+    }
+
+    // Intent page ("Why I Made This") uses reassurance animation timing
+    if (config.id === 'intent') {
+      return <IntentPage key={config.id} testId={config.testId} />;
+    }
+
+    // Alignment page ("What This Means to Us") uses reassurance animation timing
+    if (config.id === 'alignment') {
+      return <AlignmentPage key={config.id} testId={config.testId} />;
     }
 
     return (

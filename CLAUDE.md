@@ -267,9 +267,11 @@ src/
 │       ├── AppShell.tsx             # Header (ProgressIndicator), Main (DeckNavigator), Overlay (ControlLayer)
 │       └── AppShell.module.css
 ├── components/
+│   ├── AlignmentPage/               # Page 5: "What This Means to Us"
 │   ├── BeginningPage/               # Page 3: "Where It All Began"
 │   ├── Button/                      # Primary button component
 │   ├── ChoicePage/                  # Page 2: "We Chose Each Other"
+│   ├── IntentPage/                  # Page 4: "Why I Made This"
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
@@ -372,23 +374,28 @@ export function renderPages(): ReactElement[] {
 
 **Animation Configs** (`src/lib/motion/motionVariants.ts`):
 
-| Config                | Use Case | Initial Delay | Stagger | Y Offset | Easing       |
-| --------------------- | -------- | ------------- | ------- | -------- | ------------ |
-| `GROUNDING_ANIMATION` | Page 2   | 0.3s          | 0.2s    | 20px     | easeOutQuart |
-| `UNFOLDING_ANIMATION` | Page 3   | 0.2s          | 0.3s    | 10px     | easeOutCubic |
+| Config                  | Use Case          | Initial Delay | Stagger | Y Offset | Easing       |
+| ----------------------- | ----------------- | ------------- | ------- | -------- | ------------ |
+| `REASSURANCE_ANIMATION` | All content pages | 0.3s          | 0.25s   | 10px     | easeOutQuad  |
+| `GROUNDING_ANIMATION`   | Legacy (unused)   | 0.3s          | 0.2s    | 20px     | easeOutQuart |
+| `UNFOLDING_ANIMATION`   | Legacy (unused)   | 0.2s          | 0.3s    | 10px     | easeOutCubic |
+
+> **Standard:** All content pages (Pages 1-13) use `REASSURANCE_ANIMATION` for consistent, calm pacing.
 
 **Pre-built Variants:**
 
-- `standardTextVariants` — Grounding style (settling, intentional)
-- `reflectiveTextVariants` — Unfolding style (softer, slower)
+- `reassuranceTextVariants` — Standard for all content pages (calm, grounded)
 - `fadeInVariants` — Simple opacity fade for UI elements
+- `standardTextVariants` — Legacy (grounding style)
+- `reflectiveTextVariants` — Legacy (unfolding style)
 
 **Delay Calculators:**
 
 ```typescript
-calculateGroundingDelay(elementIndex: number): number  // For Page 2 style
-calculateUnfoldingDelay(elementIndex: number): number  // For Page 3 style
+calculateReassuranceDelay(elementIndex: number): number  // Standard for all content pages
 calculateStaggerDelay(elementIndex: number, config: AnimationConfig): number  // Generic
+calculateGroundingDelay(elementIndex: number): number    // Legacy
+calculateUnfoldingDelay(elementIndex: number): number    // Legacy
 ```
 
 **Creating Custom Variants:**
@@ -447,11 +454,13 @@ const customVariants = createTextVariants(customConfig);
 
 **Standard content page structure:**
 
+> **IMPORTANT:** All content pages must use center-aligned text and the standard `reassuranceTextVariants` animation for visual consistency.
+
 ```typescript
 // src/components/ExamplePage/ExamplePage.tsx
 import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { reflectiveTextVariants, calculateUnfoldingDelay } from '@lib/motion';
+import { reassuranceTextVariants, calculateReassuranceDelay } from '@lib/motion';
 import styles from './ExamplePage.module.css';
 
 const TITLE = 'Page Title';
@@ -470,18 +479,18 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
     <article className={styles.page} data-testid={testId} data-scrollable aria-label={TITLE}>
       <div className={styles.container}>
         <header className={styles.header}>
-          <motion.h1 className={styles.title} variants={reflectiveTextVariants}
+          <motion.h1 className={styles.title} variants={reassuranceTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
-            custom={calculateUnfoldingDelay(0)}>{TITLE}</motion.h1>
-          <motion.p className={styles.subtitle} variants={reflectiveTextVariants}
+            custom={calculateReassuranceDelay(0)}>{TITLE}</motion.h1>
+          <motion.p className={styles.subtitle} variants={reassuranceTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
-            custom={calculateUnfoldingDelay(1)}>{SUBTITLE}</motion.p>
+            custom={calculateReassuranceDelay(1)}>{SUBTITLE}</motion.p>
         </header>
         <div className={styles.content}>
           {BODY_PARAGRAPHS.map((p, i) => (
-            <motion.p key={p.slice(0, 20)} className={styles.body} variants={reflectiveTextVariants}
+            <motion.p key={p.slice(0, 20)} className={styles.body} variants={reassuranceTextVariants}
               initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
-              custom={calculateUnfoldingDelay(i + 2)}>{p}</motion.p>
+              custom={calculateReassuranceDelay(i + 2)}>{p}</motion.p>
           ))}
         </div>
       </div>
@@ -515,10 +524,14 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
   font-family: var(--font-family-serif);
   font-size: 2rem;
   color: var(--color-primary);
+  text-align: center;
 }
 .subtitle {
   font-family: var(--font-family);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
   color: var(--color-text-muted);
+  text-align: center;
 }
 .content {
   display: flex;
@@ -529,6 +542,7 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--color-text);
+  text-align: center;
 }
 ```
 
@@ -548,16 +562,25 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 
 **Completed Pages:**
 
-- [x] Page 0: Welcome (WelcomePage) — Staggered "Exhale" entrance
-- [x] Page 1: "We Chose Each Other" (ChoicePage) — Grounding animation
-- [x] Page 2: "Where It All Began" (BeginningPage) — Unfolding animation
+- [x] Page 0: Welcome (WelcomePage) — Staggered "Exhale" entrance (unique)
+- [x] Page 1: "We Chose Each Other" (ChoicePage) — Reassurance animation, centered
+- [x] Page 2: "Where It All Began" (BeginningPage) — Reassurance animation, centered
+- [x] Page 3: "Why I Made This" (IntentPage) — Reassurance animation, centered
+- [x] Page 4: "What This Means to Us" (AlignmentPage) — Reassurance animation, centered
 
-**Remaining Pages (3-13):** Use generic `Page` component with placeholder content.
+**Remaining Pages (5-13):** Use generic `Page` component with placeholder content.
+
+**Visual Consistency:**
+
+- All content pages (1-13) use `reassuranceTextVariants` and `calculateReassuranceDelay`
+- All content pages use center-aligned text (title, subtitle, body)
+- Page 0 (Welcome) is unique with its own animation style
+- If prompt says otherwise or strays from consistency, stop and ask to confirm
 
 **Navigation Rules:**
 
-- Pages 0-2: Backward navigation disabled (one-way opening narrative)
-- Pages 3+: Full bidirectional navigation enabled
+- Pages 0-4: Backward navigation disabled (one-way opening narrative)
+- Pages 5+: Full bidirectional navigation enabled
 
 ### 13.9 Documentation Maintenance
 

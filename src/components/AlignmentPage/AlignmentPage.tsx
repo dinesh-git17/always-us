@@ -3,32 +3,32 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 import { reassuranceTextVariants, calculateReassuranceDelay } from '@lib/motion';
 
-import styles from './BeginningPage.module.css';
+import styles from './AlignmentPage.module.css';
 
 /** Page content - immutable as per story requirements */
-const TITLE = 'Where It All Began';
-const SUBTITLE = 'The start of something real.';
+const TITLE = 'What This Means to Us';
+const SUBTITLE = 'A shared understanding, held with care.';
 
 const BODY_PARAGRAPHS = [
-  'What we found did not arrive all at once. It unfolded naturally, through moments that felt easy and conversations that mattered.',
-  'We learned each other slowly. We listened, we opened up, and we let trust grow without forcing it.',
-  'Somewhere along the way, without needing to name it, we realized this was becoming something worth holding onto.',
-  'That is where it began.',
+  'What this means to us is simple and steady. We choose to show up for each other with honesty, patience, and respect.',
+  'We are not here to rush love or force it into shape. We are here to let it grow naturally, supported by trust and intention.',
+  'This is about knowing where we stand. About feeling secure in what we share. About moving forward together, without uncertainty.',
+  'This is us, choosing clarity and care, side by side.',
 ] as const;
 
-export interface BeginningPageProps {
+export interface AlignmentPageProps {
   /** Test ID for automated testing */
   testId?: string;
 }
 
 /**
- * Page 3: "Where It All Began"
+ * Page 5: "What This Means to Us"
  *
- * Reflective page that acknowledges the relationship's history.
+ * Alignment page that establishes a shared understanding of the relationship.
  * Uses the standard "Reassurance" animation for consistent pacing across pages.
  * Respects prefers-reduced-motion for accessibility.
  */
-export function BeginningPage({ testId = 'page-2' }: BeginningPageProps): ReactNode {
+export function AlignmentPage({ testId = 'page-4' }: AlignmentPageProps): ReactNode {
   const prefersReducedMotion = useReducedMotion();
 
   // Skip animation if user prefers reduced motion
@@ -40,7 +40,7 @@ export function BeginningPage({ testId = 'page-2' }: BeginningPageProps): ReactN
       className={styles.page}
       data-testid={testId}
       data-scrollable
-      aria-label="Where It All Began"
+      aria-label="What This Means to Us"
     >
       <div className={styles.container}>
         <header className={styles.header}>

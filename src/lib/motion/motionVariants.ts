@@ -47,6 +47,20 @@ export const UNFOLDING_ANIMATION: AnimationConfig = {
 } as const;
 
 /**
+ * Animation timing constants for the "Reassurance" entrance sequence.
+ * Used on Page 4 ("Why I Made This") for a calm, settling feel.
+ * Minimal vertical movement with soft opacity reveals to convey clarity.
+ */
+export const REASSURANCE_ANIMATION: AnimationConfig = {
+  initialDelay: 0.3,
+  duration: 0.8,
+  paragraphStagger: 0.25,
+  titleSubtitleStagger: 0.1,
+  yOffset: 10,
+  ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuad
+} as const;
+
+/**
  * Easing curve for decelerating animations.
  * Creates smooth, decelerating stop for "settling" effect.
  */
@@ -100,6 +114,13 @@ export const standardTextVariants: Variants = createTextVariants(GROUNDING_ANIMA
  * Used for Page 3 and similar contemplative pages.
  */
 export const reflectiveTextVariants: Variants = createTextVariants(UNFOLDING_ANIMATION);
+
+/**
+ * Reassurance page text animation variants (Settling style).
+ * Calm, grounded reveal for pages conveying intent and care.
+ * Used for Page 4 ("Why I Made This") and similar reassuring pages.
+ */
+export const reassuranceTextVariants: Variants = createTextVariants(REASSURANCE_ANIMATION);
 
 /**
  * Fade-in variants for UI elements like progress indicators.
@@ -163,4 +184,15 @@ export function calculateGroundingDelay(elementIndex: number): number {
  */
 export function calculateUnfoldingDelay(elementIndex: number): number {
   return calculateStaggerDelay(elementIndex, UNFOLDING_ANIMATION);
+}
+
+/**
+ * Calculates animation delay for a text element in the reassurance sequence.
+ * Convenience wrapper using REASSURANCE_ANIMATION config.
+ *
+ * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
+ * @returns Delay in seconds
+ */
+export function calculateReassuranceDelay(elementIndex: number): number {
+  return calculateStaggerDelay(elementIndex, REASSURANCE_ANIMATION);
 }

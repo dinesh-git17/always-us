@@ -15,8 +15,8 @@ export const SWIPE_EDGE_ZONE = 20;
 
 /**
  * Maximum step index where backward navigation is disabled.
- * Users cannot swipe back from pages 1-2 to earlier pages.
+ * Users cannot swipe back from pages 0-4 to earlier pages.
  * This creates a one-way progression through the opening narrative
- * (Welcome -> Choice -> Beginning) before allowing free navigation.
+ * (Welcome -> Choice -> Beginning -> Intent -> Alignment) before allowing free navigation.
  */
-export const NO_BACK_UNTIL_STEP = 2;
+export const NO_BACK_UNTIL_STEP = 4;

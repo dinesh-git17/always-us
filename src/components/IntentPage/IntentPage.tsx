@@ -3,32 +3,32 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 import { reassuranceTextVariants, calculateReassuranceDelay } from '@lib/motion';
 
-import styles from './BeginningPage.module.css';
+import styles from './IntentPage.module.css';
 
 /** Page content - immutable as per story requirements */
-const TITLE = 'Where It All Began';
-const SUBTITLE = 'The start of something real.';
+const TITLE = 'Why I Made This';
+const SUBTITLE = 'Because what we have deserves intention.';
 
 const BODY_PARAGRAPHS = [
-  'What we found did not arrive all at once. It unfolded naturally, through moments that felt easy and conversations that mattered.',
-  'We learned each other slowly. We listened, we opened up, and we let trust grow without forcing it.',
-  'Somewhere along the way, without needing to name it, we realized this was becoming something worth holding onto.',
-  'That is where it began.',
+  'I made this because what we share matters to me. Not in a loud way, and not to make a statement. But because love like this deserves to be treated with care.',
+  'I wanted to create something that slows us down. Something that feels thoughtful, honest, and real. A place where feelings are clear and never rushed.',
+  'This is not about expectations or rules. It is simply about choosing to show up with intention, and letting love be something we handle gently.',
 ] as const;
 
-export interface BeginningPageProps {
+export interface IntentPageProps {
   /** Test ID for automated testing */
   testId?: string;
 }
 
 /**
- * Page 3: "Where It All Began"
+ * Page 4: "Why I Made This"
  *
- * Reflective page that acknowledges the relationship's history.
- * Uses the standard "Reassurance" animation for consistent pacing across pages.
+ * Critical emotional pivot point that frames the app as an act of care.
+ * Uses the "Reassurance" animation with calm, settled motion to convey
+ * clarity and reduce anxiety about expectations.
  * Respects prefers-reduced-motion for accessibility.
  */
-export function BeginningPage({ testId = 'page-2' }: BeginningPageProps): ReactNode {
+export function IntentPage({ testId = 'page-3' }: IntentPageProps): ReactNode {
   const prefersReducedMotion = useReducedMotion();
 
   // Skip animation if user prefers reduced motion
@@ -40,7 +40,7 @@ export function BeginningPage({ testId = 'page-2' }: BeginningPageProps): ReactN
       className={styles.page}
       data-testid={testId}
       data-scrollable
-      aria-label="Where It All Began"
+      aria-label="Why I Made This"
     >
       <div className={styles.container}>
         <header className={styles.header}>
