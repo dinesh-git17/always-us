@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 
 import { Page } from '@components/Page';
+import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
 
 /**
@@ -96,10 +97,22 @@ export const pageConfigs: PageConfig[] = [
 
 /**
  * Renders all journey pages as React elements.
- * Each page is a placeholder until Phase 2 content implementation.
+ * Special content pages (like Welcome) use custom components.
  */
 export function renderPages(): ReactElement[] {
-  return pageConfigs.map((config) => (
-    <Page key={config.id} title={config.title} subtitle={config.subtitle} testId={config.testId} />
-  ));
+  return pageConfigs.map((config) => {
+    // Welcome page uses a dedicated component with staggered animations
+    if (config.id === 'welcome') {
+      return <WelcomePage key={config.id} testId={config.testId} />;
+    }
+
+    return (
+      <Page
+        key={config.id}
+        title={config.title}
+        subtitle={config.subtitle}
+        testId={config.testId}
+      />
+    );
+  });
 }

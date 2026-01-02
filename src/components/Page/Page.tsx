@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import styles from './Page.module.css';
 
 export interface PageProps {
-  /** Page title displayed prominently */
-  title: string;
+  /** Page title displayed prominently. If omitted, header block is not rendered. */
+  title?: string;
   /** Optional subtitle for additional context */
   subtitle?: string;
   /** Page content */
@@ -18,12 +18,16 @@ export interface PageProps {
  * and semantic structure for all journey pages.
  */
 export function Page({ title, subtitle, children, testId }: PageProps): ReactNode {
+  const hasHeader = title !== undefined;
+
   return (
     <article className={styles.page} data-testid={testId} data-scrollable>
-      <header className={styles.header}>
-        <h1 className={styles.title}>{title}</h1>
-        {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-      </header>
+      {hasHeader && (
+        <header className={styles.header}>
+          <h1 className={styles.title}>{title}</h1>
+          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+        </header>
+      )}
       {children && <div className={styles.content}>{children}</div>}
     </article>
   );

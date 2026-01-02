@@ -15,8 +15,22 @@ const initialState: JourneyState = {
 };
 
 /**
+ * Subset of journey state that persists across app launches.
+ * currentStepIndex and direction are intentionally NOT persisted
+ * so the user always starts at the Welcome page with fresh animations.
+ */
+interface PersistedJourneyState {
+  maxStepReached: number;
+  isComplete: boolean;
+}
+
+/**
  * Global journey state store with localStorage persistence.
  * Tracks user progress through the 14-step journey flow.
+ *
+ * Design note: Only maxStepReached and isComplete are persisted.
+ * The app always starts at step 0 (Welcome) so users experience
+ * the entrance animation on each launch.
  */
 export const useJourneyStore = create<JourneyStore>()(
   persist(
@@ -81,11 +95,11 @@ export const useJourneyStore = create<JourneyStore>()(
           storage.removeItem(name);
         },
       })),
-      partialize: (state): JourneyState => ({
-        currentStepIndex: state.currentStepIndex,
+      // Only persist progress ceiling and completion status.
+      // currentStepIndex always resets to 0 on app launch.
+      partialize: (state): PersistedJourneyState => ({
         maxStepReached: state.maxStepReached,
         isComplete: state.isComplete,
-        direction: state.direction,
       }),
     }
   )

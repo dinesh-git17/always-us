@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.alwaysus.app',
-  appName: 'Always-Us',
+  appName: 'Always Us',
   webDir: 'dist',
   backgroundColor: '#FAF7F2',
   ios: {
@@ -14,6 +14,16 @@ const config: CapacitorConfig = {
   server: {
     // Allow loading local resources
     allowNavigation: ['*'],
+  },
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+      launchFadeOutDuration: 300,
+      backgroundColor: '#FAF7F2',
+      showSpinner: false,
+      splashImmersive: true,
+      splashFullScreen: true,
+    },
   },
 };
 

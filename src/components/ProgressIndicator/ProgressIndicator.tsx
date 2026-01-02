@@ -12,9 +12,15 @@ export interface ProgressIndicatorProps {
 /**
  * Subtle progress bar showing current position in the journey.
  * Positioned at the top of the app, below the status bar safe area.
+ * Hidden on the welcome page (step 0) to reinforce the timeless, unhurried feel.
  */
 export function ProgressIndicator({ className }: ProgressIndicatorProps): ReactNode {
   const { currentStepIndex, totalSteps } = useNavigation();
+
+  // Hide progress indicator on welcome page to create a "safe container" experience
+  if (currentStepIndex === 0) {
+    return null;
+  }
 
   // Calculate progress percentage (1-indexed for display)
   const progressPercent = ((currentStepIndex + 1) / totalSteps) * 100;

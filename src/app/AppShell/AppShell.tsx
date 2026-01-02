@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useBodyScrollLock } from '@hooks/useBodyScrollLock';
+import { useSplashScreen } from '@hooks/useSplashScreen';
 
 import styles from './AppShell.module.css';
 
@@ -21,6 +22,9 @@ export interface AppShellProps {
 export function AppShell({ header, children, overlay }: AppShellProps): ReactNode {
   // Lock body scroll to prevent iOS rubber-band effect
   useBodyScrollLock();
+
+  // Initialize splash screen lifecycle (hides after 2 seconds)
+  useSplashScreen();
 
   return (
     <div className={styles.shell}>

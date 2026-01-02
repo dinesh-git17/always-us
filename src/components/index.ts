@@ -7,3 +7,5 @@ export { Button } from './Button';
 export type { ButtonProps } from './Button';
 export { ControlLayer } from './ControlLayer';
 export type { ControlLayerProps } from './ControlLayer';
+export { WelcomePage } from './WelcomePage';
+export type { WelcomePageProps } from './WelcomePage';
