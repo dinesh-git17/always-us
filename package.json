@@ -33,6 +33,7 @@
   "dependencies": {
     "@capacitor/cli": "^8.0.0",
     "@capacitor/core": "^8.0.0",
+    "@capacitor/haptics": "^8.0.0",
     "@capacitor/ios": "^8.0.0",
     "framer-motion": "^12.23.26",
     "react": "^19.2.0",

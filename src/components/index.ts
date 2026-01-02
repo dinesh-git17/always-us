@@ -5,5 +5,5 @@ export { ProgressIndicator } from './ProgressIndicator';
 export type { ProgressIndicatorProps } from './ProgressIndicator';
 export { Button } from './Button';
 export type { ButtonProps } from './Button';
-export { ActionBar } from './ActionBar';
-export type { ActionBarProps } from './ActionBar';
+export { ControlLayer } from './ControlLayer';
+export type { ControlLayerProps } from './ControlLayer';

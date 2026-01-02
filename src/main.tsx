@@ -18,6 +18,7 @@ createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>
       <App />
+      <div className="texture-overlay" aria-hidden="true" />
     </ErrorBoundary>
   </StrictMode>
 );
