@@ -5,8 +5,8 @@
   padding: var(--spacing-xl) var(--spacing-lg);
   padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
   padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
-  /* Extended bottom padding for immersive viewport: safe area + space for control layer */
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 120px);
+  /* Reduced bottom padding for softer visual edge, control layer has its own background */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -23,9 +23,11 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-/* Title: Playfair Display, Primary Color, centered */
+/* Title: Playfair Display, Primary Color, centered with optical alignment */
 .title {
   margin: 0 0 var(--spacing-md) 0;
+  /* Optical alignment: serif capitals appear indented, negative margin corrects */
+  margin-left: -0.03em;
   font-family: var(--font-family-serif);
   font-size: 2rem;
   font-weight: var(--font-weight-medium);
@@ -35,13 +37,13 @@
   text-align: center;
 }
 
-/* Subtitle: Inter, Muted Color, centered, slightly looser tracking */
+/* Subtitle: Inter Light, Muted Color, centered, slightly looser tracking */
 .subtitle {
   margin: 0;
   font-family: var(--font-family);
   font-size: 1.125rem;
-  font-weight: var(--font-weight-medium);
-  line-height: 1.4;
+  font-weight: var(--font-weight-light);
+  line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--color-text-muted);
   text-align: center;
@@ -54,13 +56,13 @@
   flex: 1;
 }
 
-/* Body: Inter, centered, distinct spacing between paragraphs */
+/* Body: Inter Light, centered, generous leading for slow reading */
 .body {
   margin: 0;
   font-family: var(--font-family);
   font-size: 1rem;
-  font-weight: var(--font-weight-normal);
-  line-height: 1.6;
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-body);
   color: var(--color-text);
   text-align: center;
 }

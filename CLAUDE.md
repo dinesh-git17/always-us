@@ -418,6 +418,7 @@ export function renderPages(): ReactElement[] {
 - `timelessTextVariants` — Enduring reveal for permanence pages (gentle drift, extended fade)
 - `finaleTextVariants` — Final exhale for conclusion page (slowest animation, meditative)
 - `fadeInVariants` — Simple opacity fade for UI elements
+- `breathingVariants` — Subtle opacity loop for "alive" feeling during pauses (1.0 → 0.85 → 1.0 over 4s)
 - `standardTextVariants` — Legacy (grounding style)
 - `reflectiveTextVariants` — Legacy (unfolding style)
 
@@ -470,7 +471,7 @@ const customVariants = createTextVariants(customConfig);
 --color-accent-soft: #d4a5ad; /* Pale rose */
 --color-background: #faf7f2; /* Cream */
 --color-text: #2d2926; /* Dark brown */
---color-text-muted: #6b635b; /* Taupe */
+--color-text-muted: #5a524c; /* Warm grey, darkened for low-light legibility */
 --color-border: #e8ddd4; /* Light brown */
 ```
 
@@ -479,8 +480,11 @@ const customVariants = createTextVariants(customConfig);
 ```css
 --font-family: Inter, system-ui, -apple-system, ...;
 --font-family-serif: 'Playfair Display', Georgia, ...;
+--font-weight-light: 300;
 --font-weight-normal: 400;
 --font-weight-medium: 500;
+--line-height: 1.5;
+--line-height-body: 1.7;
 ```
 
 **Spacing:**
@@ -626,18 +630,34 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 **Visual Consistency:**
 
 - Most content pages (1-4) use `reassuranceTextVariants` and `calculateReassuranceDelay`
-- Page 5 (Promises) uses `vowTextVariants` and `calculateVowDelay` for slower delivery
+- Page 5 (Promises) uses `vowTextVariants` and `calculateVowDelay` (first promise appears immediately, then 0.6s stagger)
 - Page 6 (Everyday) uses `everydayTextVariants` and `calculateEverydayDelay` for fluid flow
 - Page 7 (Hard Days) uses `anchorTextVariants` and `calculateAnchorDelay` for grounding
 - Page 8 (Trust) uses `foundationTextVariants` and `calculateFoundationDelay` for steady certainty
 - Page 9 (Building) uses `horizonTextVariants` and `calculateHorizonDelay` for optimistic growth
 - Page 10 (Clause) uses `smileTextVariants` with `calculateSmileCloserDelay` for final element beat
-- Page 11 (Sealing) uses `ceremonialTextVariants` with `calculateCeremonialPauseDelay` for final pause beat
+- Page 11 (Sealing) uses `ceremonialTextVariants` with breathing animation on pause element
 - Page 12 (Eternal) uses `timelessTextVariants` with `calculateTimelessDelay` for enduring permanence
-- Page 13 (Final) uses `finaleTextVariants` with `calculateFinaleSignatureDelay` for signature beat
+- Page 13 (Final) uses `finaleTextVariants` with breathing animation on signature element
 - All content pages use center-aligned text (title, subtitle, body)
 - Page 0 (Welcome) is unique with its own animation style
+- WelcomePage and SignaturesPage use optical vertical centering (~45% from top)
 - If prompt says otherwise or strays from consistency, stop and ask to confirm
+
+**Typography Polish:**
+
+- Body text uses `--font-weight-light` (300) for softer, book-like quality
+- Body line-height increased to `--line-height-body` (1.7) for generous leading
+- Subtitles use lighter weight and improved line-height for better readability
+- Serif titles use optical alignment (`margin-left: -0.03em`) to correct visual indentation
+- Subtitle color darkened from `#6b635b` to `#5a524c` for low-light legibility
+
+**Breathing Animation:**
+
+- `breathingVariants` provides subtle opacity loop (1.0 → 0.85 → 1.0 over 4s)
+- Applied to SignaturesPage pause element and FinalPage signature element
+- Starts after entrance animation completes to signal app is "alive"
+- Respects prefers-reduced-motion preference
 
 **Navigation Rules:**
 

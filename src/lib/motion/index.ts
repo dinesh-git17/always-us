@@ -32,6 +32,7 @@ export {
   timelessTextVariants,
   finaleTextVariants,
   fadeInVariants,
+  breathingVariants,
   calculateStaggerDelay,
   calculateGroundingDelay,
   calculateUnfoldingDelay,

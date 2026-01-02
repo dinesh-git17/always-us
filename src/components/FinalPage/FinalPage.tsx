@@ -1,10 +1,12 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 import {
   finaleTextVariants,
+  breathingVariants,
   calculateFinaleDelay,
   calculateFinaleSignatureDelay,
+  FINALE_ANIMATION,
 } from '@lib/motion';
 
 import styles from './FinalPage.module.css';
@@ -29,6 +31,9 @@ export interface FinalPageProps {
   testId?: string;
 }
 
+/** Duration buffer for breathing animation to start after entrance completes */
+const BREATHING_START_BUFFER = 0.5;
+
 /**
  * Page 14: "Final Words"
  *
@@ -37,10 +42,13 @@ export interface FinalPageProps {
  * and 1.5s fade duration for deliberate, meditative pacing.
  * The signature "Always us." appears after an extra 1.5s delay, creating a moment
  * of silence before the final thought is spoken.
+ * After entrance animation completes, signature text begins subtle breathing animation
+ * to signal the app is alive and holding space for the user.
  * Respects prefers-reduced-motion for accessibility.
  */
 export function FinalPage({ testId = 'page-13' }: FinalPageProps): ReactNode {
   const prefersReducedMotion = useReducedMotion();
+  const [isBreathing, setIsBreathing] = useState(false);
 
   // Skip animation if user prefers reduced motion
   const animationState = prefersReducedMotion ? 'visible' : 'visible';
@@ -48,6 +56,23 @@ export function FinalPage({ testId = 'page-13' }: FinalPageProps): ReactNode {
 
   // Index for the signature element (after title, subtitle, and 4 body paragraphs)
   const signatureIndex = 6;
+
+  // Calculate when breathing should start (after signature animation completes)
+  const signatureDelay = calculateFinaleSignatureDelay(signatureIndex);
+  const breathingStartTime =
+    (signatureDelay + FINALE_ANIMATION.duration + BREATHING_START_BUFFER) * 1000;
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const timer = setTimeout(() => {
+      setIsBreathing(true);
+    }, breathingStartTime);
+
+    return (): void => {
+      clearTimeout(timer);
+    };
+  }, [breathingStartTime, prefersReducedMotion]);
 
   return (
     <article className={styles.page} data-testid={testId} data-scrollable aria-label="Final Words">
@@ -88,12 +113,12 @@ export function FinalPage({ testId = 'page-13' }: FinalPageProps): ReactNode {
             </motion.p>
           ))}
 
-          {/* The signature: extra delay for final moment of silence */}
+          {/* The signature: extra delay for final moment of silence, then breathing */}
           <motion.p
             className={styles.signature}
-            variants={finaleTextVariants}
+            variants={isBreathing ? breathingVariants : finaleTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'}
-            animate={animationState}
+            animate={isBreathing ? 'breathing' : animationState}
             custom={calculateFinaleSignatureDelay(signatureIndex)}
           >
             {SIGNATURE}

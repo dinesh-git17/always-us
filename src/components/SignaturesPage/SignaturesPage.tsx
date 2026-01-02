@@ -1,10 +1,12 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 import {
   ceremonialTextVariants,
+  breathingVariants,
   calculateCeremonialDelay,
   calculateCeremonialPauseDelay,
+  CEREMONIAL_ANIMATION,
 } from '@lib/motion';
 
 import styles from './SignaturesPage.module.css';
@@ -28,6 +30,9 @@ export interface SignaturesPageProps {
   testId?: string;
 }
 
+/** Duration buffer for breathing animation to start after entrance completes */
+const BREATHING_START_BUFFER = 0.5;
+
 /**
  * Page 12: "Signatures & Sealing"
  *
@@ -35,10 +40,13 @@ export interface SignaturesPageProps {
  * Uses the Ceremonial animation sequence with very slow 0.8s stagger for reverent pacing.
  * The final "pause" paragraph receives an extra 1.0s delay to create stillness
  * and encourage the user to slow down before the experience concludes.
+ * After entrance animation completes, pause text begins subtle breathing animation
+ * to signal the app is alive and holding space for the user.
  * Respects prefers-reduced-motion for accessibility.
  */
 export function SignaturesPage({ testId = 'page-11' }: SignaturesPageProps): ReactNode {
   const prefersReducedMotion = useReducedMotion();
+  const [isBreathing, setIsBreathing] = useState(false);
 
   // Skip animation if user prefers reduced motion
   const animationState = prefersReducedMotion ? 'visible' : 'visible';
@@ -46,6 +54,23 @@ export function SignaturesPage({ testId = 'page-11' }: SignaturesPageProps): Rea
 
   // Index for the pause element (after title, subtitle, and 3 body paragraphs)
   const pauseIndex = 5;
+
+  // Calculate when breathing should start (after pause animation completes)
+  const pauseDelay = calculateCeremonialPauseDelay(pauseIndex);
+  const breathingStartTime =
+    (pauseDelay + CEREMONIAL_ANIMATION.duration + BREATHING_START_BUFFER) * 1000;
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const timer = setTimeout(() => {
+      setIsBreathing(true);
+    }, breathingStartTime);
+
+    return (): void => {
+      clearTimeout(timer);
+    };
+  }, [breathingStartTime, prefersReducedMotion]);
 
   return (
     <article
@@ -91,12 +116,12 @@ export function SignaturesPage({ testId = 'page-11' }: SignaturesPageProps): Rea
             </motion.p>
           ))}
 
-          {/* The pause: extra delay for contemplative moment */}
+          {/* The pause: extra delay for contemplative moment, then breathing */}
           <motion.p
             className={styles.pause}
-            variants={ceremonialTextVariants}
+            variants={isBreathing ? breathingVariants : ceremonialTextVariants}
             initial={shouldAnimate ? 'hidden' : 'visible'}
-            animate={animationState}
+            animate={isBreathing ? 'breathing' : animationState}
             custom={calculateCeremonialPauseDelay(pauseIndex)}
           >
             {PAUSE}

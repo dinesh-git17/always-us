@@ -22,13 +22,14 @@ export interface AnimationConfig {
 /**
  * Animation timing constants for the "Grounding" entrance sequence.
  * Used on Page 2 to create a settling, intentional feel.
+ * Reduced yOffset from 20 to 8 for subtle movement that feels like a thought arriving.
  */
 export const GROUNDING_ANIMATION: AnimationConfig = {
   initialDelay: 0.3,
   duration: 0.8,
   paragraphStagger: 0.2,
   titleSubtitleStagger: 0.1,
-  yOffset: 20,
+  yOffset: 8,
   ease: [0.25, 1, 0.5, 1], // easeOutQuart
 } as const;
 
@@ -347,6 +348,37 @@ export const fadeInVariants: Variants = {
 };
 
 /**
+ * Breathing animation variants for creating "alive" feeling during pauses.
+ * Subtle opacity loop (1.0 -> 0.85 -> 1.0) that signals the app is responsive
+ * and holding space for the user during contemplative moments.
+ */
+export const breathingVariants: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: (customDelay: unknown) => {
+    const delay = typeof customDelay === 'number' ? customDelay : 0;
+    return {
+      opacity: 1,
+      transition: {
+        delay,
+        duration: 1.2,
+        ease: [0.37, 0, 0.63, 1], // easeInOutSine
+      },
+    };
+  },
+  breathing: {
+    opacity: [1, 0.85, 1],
+    transition: {
+      duration: 4,
+      ease: 'easeInOut',
+      repeat: Infinity,
+      repeatType: 'loop' as const,
+    },
+  },
+};
+
+/**
  * Calculates animation delay for a text element using a given config.
  *
  * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
@@ -406,14 +438,34 @@ export function calculateReassuranceDelay(elementIndex: number): number {
 
 /**
  * Calculates animation delay for a text element in the vow sequence.
- * Convenience wrapper using VOW_ANIMATION config.
- * Slower stagger creates deliberate pacing for promise delivery.
+ * Special handling: first promise (index 2) appears immediately with no delay,
+ * while subsequent promises maintain the slower 0.6s stagger.
+ * This creates an immediate "here is my promise" moment followed by deliberate delivery.
  *
  * @param elementIndex - Zero-based index of the element (0 = title, 1 = subtitle, 2+ = body paragraphs)
  * @returns Delay in seconds
  */
 export function calculateVowDelay(elementIndex: number): number {
-  return calculateStaggerDelay(elementIndex, VOW_ANIMATION);
+  const { initialDelay, titleSubtitleStagger, paragraphStagger } = VOW_ANIMATION;
+
+  if (elementIndex === 0) {
+    // Title
+    return initialDelay;
+  }
+
+  if (elementIndex === 1) {
+    // Subtitle
+    return initialDelay + titleSubtitleStagger;
+  }
+
+  // First promise (index 2) appears immediately after subtitle
+  if (elementIndex === 2) {
+    return initialDelay + titleSubtitleStagger + 0.15;
+  }
+
+  // Subsequent promises maintain slow stagger from the first promise
+  const bodyIndex = elementIndex - 2;
+  return initialDelay + titleSubtitleStagger + 0.15 + bodyIndex * paragraphStagger;
 }
 
 /**
