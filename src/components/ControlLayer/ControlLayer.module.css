@@ -15,18 +15,35 @@
   display: flex;
   align-items: flex-end;
   pointer-events: auto;
-  background: transparent;
-  border: none;
-  cursor: pointer;
   color: var(--color-text-muted);
 
   /* Touch target compliance: min 44x44pt */
   min-height: 44px;
   min-width: 44px;
 
+  /* Reset all default button styles */
+  background: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
   /* Remove default mobile tap highlights */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Override global hover/active states */
+.tapZoneLeft:hover,
+.tapZoneRight:hover,
+.tapZoneLeft:active,
+.tapZoneRight:active {
+  background: none;
+  background-color: transparent;
 }
 
 .tapZoneLeft {
@@ -46,12 +63,16 @@
 .tapZoneLeft:focus,
 .tapZoneRight:focus {
   outline: none;
+  background: none;
+  background-color: transparent;
 }
 
 .tapZoneLeft:focus-visible,
 .tapZoneRight:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: -2px;
+  background: none;
+  background-color: transparent;
 }
 
 .chevron {
