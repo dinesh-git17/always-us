@@ -1,0 +1,3 @@
+/* Global styles entry point */
+@import './variables.css';
+@import './safe-area.css';

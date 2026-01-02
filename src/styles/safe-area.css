@@ -1,0 +1,75 @@
+/**
+ * Safe Area Utilities for iOS devices with notch/Dynamic Island
+ * Uses CSS environment variables for proper inset handling
+ */
+
+/* Safe area padding utilities */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.safe-area-x {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.safe-area-y {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-all {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* Safe area margin utilities */
+.safe-area-margin-top {
+  margin-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-margin-bottom {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Min-height utilities for fixed elements */
+.min-h-safe-top {
+  min-height: env(safe-area-inset-top, 0px);
+}
+
+.min-h-safe-bottom {
+  min-height: env(safe-area-inset-bottom, 0px);
+}
+
+/* Full screen container with safe areas */
+.full-screen-safe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* Status bar height variable (for custom positioning) */
+:root {
+  --status-bar-height: env(safe-area-inset-top, 20px);
+  --home-indicator-height: env(safe-area-inset-bottom, 0px);
+}

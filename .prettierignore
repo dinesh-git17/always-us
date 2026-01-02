@@ -1,0 +1,6 @@
+dist
+node_modules
+ios
+.git
+*.lock
+package-lock.json
