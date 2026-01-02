@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { useJourneyStore } from '../store/journeyStore';
-import { TOTAL_STEPS } from '../constants';
+import { TOTAL_STEPS, NO_BACK_UNTIL_STEP } from '../constants';
 import type { NavigationContext } from '../types';
 
 /**
@@ -17,7 +17,8 @@ export function useNavigation(): NavigationContext {
   const storeGoTo = useJourneyStore((state) => state.goTo);
 
   const canGoNext = currentStepIndex < TOTAL_STEPS - 1;
-  const canGoPrev = currentStepIndex > 0;
+  // Disable backward navigation during the opening narrative (pages 0-2)
+  const canGoPrev = currentStepIndex > 0 && currentStepIndex > NO_BACK_UNTIL_STEP;
 
   const next = useCallback((): void => {
     if (canGoNext) {

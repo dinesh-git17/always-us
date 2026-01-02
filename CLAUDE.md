@@ -256,6 +256,322 @@ ios/               # Capacitor iOS project (do not edit manually unless necessar
 
 ---
 
+## 13. Codebase Reference
+
+### 13.1 Directory Structure (Actual)
+
+```
+src/
+├── app/
+│   └── AppShell/                    # Root layout with safe areas
+│       ├── AppShell.tsx             # Header (ProgressIndicator), Main (DeckNavigator), Overlay (ControlLayer)
+│       └── AppShell.module.css
+├── components/
+│   ├── BeginningPage/               # Page 3: "Where It All Began"
+│   ├── Button/                      # Primary button component
+│   ├── ChoicePage/                  # Page 2: "We Chose Each Other"
+│   ├── ControlLayer/                # Navigation tap zones with chevrons
+│   ├── ErrorBoundary.tsx            # Error handling wrapper
+│   ├── Page/                        # Generic page wrapper
+│   ├── ProgressIndicator/           # Top progress bar (hidden on page 0)
+│   └── WelcomePage/                 # Page 1: Intro with staggered text
+├── features/
+│   ├── navigation/
+│   │   ├── components/DeckNavigator/ # Page transition manager with Framer Motion
+│   │   ├── hooks/
+│   │   │   ├── useNavigation.ts      # Navigation context hook
+│   │   │   └── useSwipeGesture.ts    # Horizontal swipe detection
+│   │   ├── store/journeyStore.ts     # Zustand store with localStorage persistence
+│   │   ├── constants.ts              # TOTAL_STEPS, thresholds, NO_BACK_UNTIL_STEP
+│   │   ├── types.ts                  # JourneyState, NavigationContext, PageConfig
+│   │   └── index.ts                  # Public exports
+│   └── pages/
+│       └── pages.tsx                 # Page registry and renderPages()
+├── hooks/
+│   ├── useBodyScrollLock.ts          # Prevents iOS rubber-band scrolling
+│   └── useSplashScreen.ts            # Capacitor splash screen lifecycle
+├── lib/
+│   ├── motion/
+│   │   ├── motionVariants.ts         # Animation configs and variants
+│   │   └── index.ts
+│   └── storage/
+│       ├── storage.ts                # Cross-platform localStorage wrapper
+│       └── index.ts
+├── styles/
+│   ├── variables.css                 # Design tokens (colors, spacing, typography)
+│   ├── safe-area.css                 # iOS safe area utilities
+│   └── index.css                     # Global styles entry point
+└── App.tsx                           # Root component
+```
+
+### 13.2 Navigation System
+
+**Journey Store** (`src/features/navigation/store/journeyStore.ts`):
+
+- Zustand store with `persist` middleware
+- **Persisted:** `maxStepReached`, `isComplete`
+- **Not persisted:** `currentStepIndex` (always starts at 0), `direction`
+- Actions: `next()`, `prev()`, `goTo(index)`, `markComplete()`, `reset()`
+
+**Navigation Hook** (`src/features/navigation/hooks/useNavigation.ts`):
+
+```typescript
+interface NavigationContext {
+  currentStepIndex: number; // 0-13
+  totalSteps: number; // 14
+  canGoNext: boolean;
+  canGoPrev: boolean; // false for steps 0-2 (opening narrative)
+  isComplete: boolean;
+  direction: 1 | -1;
+  next: () => void;
+  prev: () => void;
+  goTo: (index: number) => void;
+}
+```
+
+**Navigation Constants** (`src/features/navigation/constants.ts`):
+
+- `TOTAL_STEPS = 14`
+- `NO_BACK_UNTIL_STEP = 2` — Backward navigation disabled for pages 0-2
+- `SWIPE_THRESHOLD_DISTANCE = 50` — Minimum swipe distance in pixels
+- `SWIPE_EDGE_ZONE = 20` — Edge zone where swipe is ignored (iOS back gesture)
+
+**DeckNavigator** (`src/features/navigation/components/DeckNavigator/`):
+
+- Uses `AnimatePresence` with `mode="popLayout"` for transitions
+- Parallax stack animation: new page slides over exiting page
+- Spring physics: `stiffness: 260, damping: 30`
+- Haptic feedback via `@capacitor/haptics` on page change
+
+### 13.3 Page Registration
+
+**Page Config** (`src/features/pages/pages.tsx`):
+
+```typescript
+// Add new page to pageConfigs array
+export const pageConfigs: PageConfig[] = [
+  { id: 'welcome', title: 'Welcome', subtitle: '...', testId: 'page-0' },
+  { id: 'choice', title: 'We Chose Each Other', subtitle: '...', testId: 'page-1' },
+  { id: 'beginning', title: 'Where It All Began', subtitle: '...', testId: 'page-2' },
+  // ... more pages
+];
+
+// Register custom components in renderPages()
+export function renderPages(): ReactElement[] {
+  return pageConfigs.map((config) => {
+    if (config.id === 'welcome') return <WelcomePage key={config.id} testId={config.testId} />;
+    if (config.id === 'choice') return <ChoicePage key={config.id} testId={config.testId} />;
+    if (config.id === 'beginning') return <BeginningPage key={config.id} testId={config.testId} />;
+    // Default: generic Page component
+    return <Page key={config.id} title={config.title} subtitle={config.subtitle} testId={config.testId} />;
+  });
+}
+```
+
+### 13.4 Animation System
+
+**Animation Configs** (`src/lib/motion/motionVariants.ts`):
+
+| Config                | Use Case | Initial Delay | Stagger | Y Offset | Easing       |
+| --------------------- | -------- | ------------- | ------- | -------- | ------------ |
+| `GROUNDING_ANIMATION` | Page 2   | 0.3s          | 0.2s    | 20px     | easeOutQuart |
+| `UNFOLDING_ANIMATION` | Page 3   | 0.2s          | 0.3s    | 10px     | easeOutCubic |
+
+**Pre-built Variants:**
+
+- `standardTextVariants` — Grounding style (settling, intentional)
+- `reflectiveTextVariants` — Unfolding style (softer, slower)
+- `fadeInVariants` — Simple opacity fade for UI elements
+
+**Delay Calculators:**
+
+```typescript
+calculateGroundingDelay(elementIndex: number): number  // For Page 2 style
+calculateUnfoldingDelay(elementIndex: number): number  // For Page 3 style
+calculateStaggerDelay(elementIndex: number, config: AnimationConfig): number  // Generic
+```
+
+**Creating Custom Variants:**
+
+```typescript
+import { createTextVariants, type AnimationConfig } from '@lib/motion';
+
+const customConfig: AnimationConfig = {
+  initialDelay: 0.4,
+  duration: 0.8,
+  paragraphStagger: 0.25,
+  titleSubtitleStagger: 0.1,
+  yOffset: 15,
+  ease: [0.25, 1, 0.5, 1], // easeOutQuart
+};
+
+const customVariants = createTextVariants(customConfig);
+```
+
+### 13.5 Design Tokens
+
+**Colors** (`src/styles/variables.css`):
+
+```css
+--color-primary: #8b2942; /* Warm burgundy */
+--color-primary-hover: #6d2035;
+--color-accent: #b76e79; /* Rose gold */
+--color-accent-soft: #d4a5ad; /* Pale rose */
+--color-background: #faf7f2; /* Cream */
+--color-text: #2d2926; /* Dark brown */
+--color-text-muted: #6b635b; /* Taupe */
+--color-border: #e8ddd4; /* Light brown */
+```
+
+**Typography:**
+
+```css
+--font-family: Inter, system-ui, -apple-system, ...;
+--font-family-serif: 'Playfair Display', Georgia, ...;
+--font-weight-normal: 400;
+--font-weight-medium: 500;
+```
+
+**Spacing:**
+
+```css
+--spacing-xs: 4px;
+--spacing-sm: 8px;
+--spacing-md: 16px;
+--spacing-lg: 24px;
+--spacing-xl: 32px;
+--spacing-2xl: 48px;
+```
+
+### 13.6 Content Page Pattern
+
+**Standard content page structure:**
+
+```typescript
+// src/components/ExamplePage/ExamplePage.tsx
+import type { ReactNode } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { reflectiveTextVariants, calculateUnfoldingDelay } from '@lib/motion';
+import styles from './ExamplePage.module.css';
+
+const TITLE = 'Page Title';
+const SUBTITLE = 'Page subtitle text.';
+const BODY_PARAGRAPHS = ['Paragraph 1...', 'Paragraph 2...'] as const;
+
+export interface ExamplePageProps {
+  testId?: string;
+}
+
+export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode {
+  const prefersReducedMotion = useReducedMotion();
+  const shouldAnimate = !prefersReducedMotion;
+
+  return (
+    <article className={styles.page} data-testid={testId} data-scrollable aria-label={TITLE}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <motion.h1 className={styles.title} variants={reflectiveTextVariants}
+            initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
+            custom={calculateUnfoldingDelay(0)}>{TITLE}</motion.h1>
+          <motion.p className={styles.subtitle} variants={reflectiveTextVariants}
+            initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
+            custom={calculateUnfoldingDelay(1)}>{SUBTITLE}</motion.p>
+        </header>
+        <div className={styles.content}>
+          {BODY_PARAGRAPHS.map((p, i) => (
+            <motion.p key={p.slice(0, 20)} className={styles.body} variants={reflectiveTextVariants}
+              initial={shouldAnimate ? 'hidden' : 'visible'} animate="visible"
+              custom={calculateUnfoldingDelay(i + 2)}>{p}</motion.p>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+```
+
+**Standard CSS module pattern:**
+
+```css
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 120px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+.header {
+  margin-bottom: var(--spacing-2xl);
+}
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+.subtitle {
+  font-family: var(--font-family);
+  color: var(--color-text-muted);
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+.body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--color-text);
+}
+```
+
+### 13.7 Path Aliases
+
+```typescript
+// tsconfig.app.json paths
+"@app/*": ["src/app/*"]
+"@components/*": ["src/components/*"]
+"@features/*": ["src/features/*"]
+"@hooks/*": ["src/hooks/*"]
+"@lib/*": ["src/lib/*"]
+"@styles/*": ["src/styles/*"]
+```
+
+### 13.8 Implementation Progress
+
+**Completed Pages:**
+
+- [x] Page 0: Welcome (WelcomePage) — Staggered "Exhale" entrance
+- [x] Page 1: "We Chose Each Other" (ChoicePage) — Grounding animation
+- [x] Page 2: "Where It All Began" (BeginningPage) — Unfolding animation
+
+**Remaining Pages (3-13):** Use generic `Page` component with placeholder content.
+
+**Navigation Rules:**
+
+- Pages 0-2: Backward navigation disabled (one-way opening narrative)
+- Pages 3+: Full bidirectional navigation enabled
+
+### 13.9 Documentation Maintenance
+
+> **IMPORTANT:** Before pushing code, update this section (13.8) with any implementation progress:
+>
+> - Mark newly completed pages with `[x]`
+> - Add new animation configs to section 13.4 if created
+> - Update navigation rules if modified
+> - Add new components to directory structure (13.1) if created
+>
+> This keeps the documentation in sync and saves exploration time in future sessions.
+
+---
+
 **END OF DOCUMENT**
 
 This is the engineering contract for Always Us. When in doubt, err on the side of strictness.

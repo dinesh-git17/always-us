@@ -1,5 +1,7 @@
 import type { ReactElement } from 'react';
 
+import { BeginningPage } from '@components/BeginningPage';
+import { ChoicePage } from '@components/ChoicePage';
 import { Page } from '@components/Page';
 import { WelcomePage } from '@components/WelcomePage';
 import type { PageConfig } from '@features/navigation';
@@ -16,15 +18,15 @@ export const pageConfigs: PageConfig[] = [
     testId: 'page-0',
   },
   {
-    id: 'partner-setup',
-    title: 'Partner Setup',
-    subtitle: 'Connect with your partner',
+    id: 'choice',
+    title: 'We Chose Each Other',
+    subtitle: 'Not by chance, but with intention.',
     testId: 'page-1',
   },
   {
-    id: 'our-story',
-    title: 'Our Story',
-    subtitle: 'How it all began',
+    id: 'beginning',
+    title: 'Where It All Began',
+    subtitle: 'The start of something real.',
     testId: 'page-2',
   },
   {
@@ -104,6 +106,16 @@ export function renderPages(): ReactElement[] {
     // Welcome page uses a dedicated component with staggered animations
     if (config.id === 'welcome') {
       return <WelcomePage key={config.id} testId={config.testId} />;
+    }
+
+    // Choice page ("We Chose Each Other") uses a dedicated component
+    if (config.id === 'choice') {
+      return <ChoicePage key={config.id} testId={config.testId} />;
+    }
+
+    // Beginning page ("Where It All Began") uses reflective animation timing
+    if (config.id === 'beginning') {
+      return <BeginningPage key={config.id} testId={config.testId} />;
     }
 
     return (
