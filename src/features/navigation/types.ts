@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { QuoteCategory } from '@lib/quotes';
 
 /** Direction of navigation transition (1 = forward, -1 = backward) */
 export type TransitionDirection = 1 | -1;
@@ -44,6 +45,10 @@ export interface PageConfig {
   testId: string;
   /** Optional page content */
   content?: ReactNode;
+  /** Quote category for epigraph display (null = no epigraph) */
+  quoteCategory?: QuoteCategory | null;
+  /** Delay in seconds before epigraph appears (after page content animation completes) */
+  epigraphDelay?: number;
 }
 
 /** Navigation context exposed by useNavigation hook */

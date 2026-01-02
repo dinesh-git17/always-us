@@ -20,6 +20,12 @@ import type { PageConfig } from '@features/navigation';
 /**
  * Configuration for all 14 journey pages.
  * Content is placeholder text until Phase 2 implementation.
+ *
+ * quoteCategory: Controls which epigraph quotes appear on each page.
+ * Pages with null quoteCategory show no epigraph (excluded pages).
+ *
+ * epigraphDelay: Calculated as (last element delay + animation duration + 0.3s buffer).
+ * This ensures quotes appear after page content finishes animating.
  */
 export const pageConfigs: PageConfig[] = [
   {
@@ -27,84 +33,109 @@ export const pageConfigs: PageConfig[] = [
     title: 'Welcome',
     subtitle: 'Begin your journey together',
     testId: 'page-0',
+    quoteCategory: 'intro',
+    epigraphDelay: 7.9, // 9 elements × 0.8s stagger + 0.8s duration + 0.3s buffer
   },
   {
     id: 'choice',
     title: 'We Chose Each Other',
     subtitle: 'Not by chance, but with intention.',
     testId: 'page-1',
+    quoteCategory: 'we_chose_each_other',
+    epigraphDelay: 2.5, // REASSURANCE: 6 elements, last delay 1.4s + 0.8s + 0.3s
   },
   {
     id: 'beginning',
     title: 'Where It All Began',
     subtitle: 'The start of something real.',
     testId: 'page-2',
+    quoteCategory: 'where_it_all_began',
+    epigraphDelay: 2.5, // REASSURANCE: 6 elements
   },
   {
     id: 'intent',
     title: 'Why I Made This',
     subtitle: 'Because what we have deserves intention.',
     testId: 'page-3',
+    quoteCategory: 'why_i_made_this',
+    epigraphDelay: 2.25, // REASSURANCE: 5 elements, last delay 1.15s + 0.8s + 0.3s
   },
   {
     id: 'alignment',
     title: 'What This Means to Us',
     subtitle: 'A shared understanding, held with care.',
     testId: 'page-4',
+    quoteCategory: 'what_this_means_to_us',
+    epigraphDelay: 2.5, // REASSURANCE: 6 elements
   },
   {
     id: 'promises',
     title: 'What I Promise You',
     subtitle: 'Spoken with care, and meant deeply.',
     testId: 'page-5',
+    quoteCategory: 'what_i_promise_you',
+    epigraphDelay: 4.5, // VOW: 7 elements, last delay 3.4s + 0.8s + 0.3s
   },
   {
     id: 'everyday',
     title: 'How I Show Up Every Day',
     subtitle: 'In the small moments that matter most.',
     testId: 'page-6',
+    quoteCategory: null, // Excluded from epigraphs
   },
   {
     id: 'hard-days',
     title: 'On the Hard Days',
     subtitle: 'When things feel heavy, you are not alone.',
     testId: 'page-7',
+    quoteCategory: 'on_the_hard_days',
+    epigraphDelay: 3.5, // ANCHOR: 6 elements, last delay 2.4s + 0.8s + 0.3s
   },
   {
     id: 'trust',
     title: 'Trust and Loyalty',
     subtitle: 'So you never have to question where you stand.',
     testId: 'page-8',
+    quoteCategory: null, // Excluded from epigraphs
   },
   {
     id: 'building',
     title: "What We're Building Together",
     subtitle: 'A future shaped with intention and care.',
     testId: 'page-9',
+    quoteCategory: null, // Excluded from epigraphs
   },
   {
     id: 'non-refundable',
     title: 'The Non-Refundable Clause',
     subtitle: 'Chosen with intention. Kept with care.',
     testId: 'page-10',
+    quoteCategory: 'non_refundable_clause',
+    epigraphDelay: 2.4, // SMILE: 6 elements with closer, last delay 1.5s + 0.6s + 0.3s
   },
   {
     id: 'signatures',
     title: 'Signatures & Sealing',
     subtitle: 'A moment held with intention.',
     testId: 'page-11',
+    quoteCategory: 'signatures_and_sealing',
+    epigraphDelay: 6.35, // CEREMONIAL: 6 elements with pause, last delay 4.85s + 1.2s + 0.3s
   },
   {
     id: 'eternal-validity',
     title: 'Eternal Validity',
     subtitle: 'Without expiration. Without conditions.',
     testId: 'page-12',
+    quoteCategory: 'eternal_validity',
+    epigraphDelay: 4.85, // TIMELESS: 6 elements, last delay 3.35s + 1.2s + 0.3s
   },
   {
     id: 'finale',
     title: 'Final Words',
     subtitle: 'Where love is spoken, and meant.',
     testId: 'page-13',
+    quoteCategory: 'final_words',
+    epigraphDelay: 7.95, // FINALE: 7 elements with signature, last delay 6.15s + 1.5s + 0.3s
   },
 ];
 

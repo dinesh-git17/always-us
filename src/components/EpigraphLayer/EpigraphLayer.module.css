@@ -1,0 +1,29 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.epigraph {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 100px);
+  text-align: center;
+}
+
+.text {
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  max-width: 320px;
+  margin: 0 auto;
+}

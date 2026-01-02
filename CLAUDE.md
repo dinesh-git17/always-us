@@ -264,7 +264,7 @@ ios/               # Capacitor iOS project (do not edit manually unless necessar
 src/
 ├── app/
 │   └── AppShell/                    # Root layout with safe areas
-│       ├── AppShell.tsx             # Header (ProgressIndicator), Main (DeckNavigator), Overlay (ControlLayer)
+│       ├── AppShell.tsx             # Header (ProgressIndicator), Main (DeckNavigator), Overlay (EpigraphLayer, ControlLayer)
 │       └── AppShell.module.css
 ├── components/
 │   ├── AlignmentPage/               # Page 5: "What This Means to Us"
@@ -282,6 +282,7 @@ src/
 │   ├── EternalValidityPage/         # Page 12: "Eternal Validity"
 │   ├── FinalPage/                   # Page 13: "Final Words"
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
+│   ├── EpigraphLayer/               # Rotating quote overlay at bottom of pages
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
 │   ├── ProgressIndicator/           # Top progress bar (hidden on page 0)
@@ -304,6 +305,10 @@ src/
 ├── lib/
 │   ├── motion/
 │   │   ├── motionVariants.ts         # Animation configs and variants
+│   │   └── index.ts
+│   ├── quotes/
+│   │   ├── quotes.ts                 # Quote data and category types
+│   │   ├── quoteStore.ts             # Session-scoped Zustand store for quote selection
 │   │   └── index.ts
 │   └── storage/
 │       ├── storage.ts                # Cross-platform localStorage wrapper
@@ -638,6 +643,17 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 
 - Page 0 → 1: Forward only (Welcome is one-way entry point)
 - Pages 1+: Full bidirectional navigation enabled
+
+**Epigraph System:**
+
+The Epigraph system displays rotating romantic quotes at the bottom of specific pages. Quotes are selected randomly once per app session and remain consistent for that session.
+
+- **Included Pages:** Welcome (0), We Chose Each Other (1), Where It All Began (2), Why I Made This (3), What This Means to Us (4), What I Promise You (5), On the Hard Days (7), The Non-Refundable Clause (10), Signatures & Sealing (11), Eternal Validity (12), Final Words (13)
+- **Excluded Pages:** How I Show Up Every Day (6), Trust and Loyalty (8), What We're Building Together (9)
+- **Animation:** Ethereal fade-in with y-offset drift (duration: 1.2s, easeInOutSine)
+- **Timing:** Each page has a custom `epigraphDelay` calculated as (last element delay + animation duration + 0.3s buffer) to ensure quotes appear after page content finishes animating
+- **Typography:** Inter, Italic, Light weight (300), 0.75rem, muted color
+- **Session Persistence:** Quotes randomize on app launch but stay consistent during the session
 
 ### 13.9 Documentation Maintenance
 
