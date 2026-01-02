@@ -1,0 +1,56 @@
+.shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  overflow: hidden;
+
+  /* Prevent text selection for app-like feel */
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* Prevent tap highlight */
+  -webkit-tap-highlight-color: transparent;
+
+  /* Ensure smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  /* Safe area padding for main content area */
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Progress indicator container at the top */
+.header {
+  position: relative;
+  z-index: var(--z-dropdown);
+  flex-shrink: 0;
+}
+
+/* Main content area that houses the deck navigator */
+.main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Footer area for action bar */
+.footer {
+  position: relative;
+  z-index: var(--z-dropdown);
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

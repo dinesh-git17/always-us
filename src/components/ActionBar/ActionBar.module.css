@@ -1,0 +1,32 @@
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+  background-color: var(--color-background);
+
+  /* Subtle top border for separation */
+  border-top: 1px solid var(--color-background-light);
+}
+
+.backButton {
+  flex-shrink: 0;
+}
+
+.primaryButton {
+  flex: 1;
+  max-width: 280px;
+}
+
+/* When there's no back button, center the primary button */
+.primaryOnly {
+  justify-content: center;
+}
+
+.primaryOnly .primaryButton {
+  flex: none;
+  min-width: 200px;
+}

@@ -1,34 +1,21 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import type { ReactNode } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0);
+import { AppShell } from '@app/AppShell';
+import { ProgressIndicator, ActionBar } from '@components/index';
+import { DeckNavigator } from '@features/navigation';
+import { renderPages } from '@features/pages';
 
-  const handleClick = () => {
-    setCount((prevCount) => prevCount + 1);
-  };
+/**
+ * Root application component that assembles the journey UI.
+ * Renders the app shell with progress indicator, deck navigator, and action bar.
+ */
+function App(): ReactNode {
+  const pages = renderPages();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={handleClick}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <AppShell header={<ProgressIndicator />} footer={<ActionBar />}>
+      <DeckNavigator>{pages}</DeckNavigator>
+    </AppShell>
   );
 }
 
