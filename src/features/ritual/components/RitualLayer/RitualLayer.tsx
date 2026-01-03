@@ -14,40 +14,23 @@ import { BiometricPrompt } from '../BiometricPrompt';
 
 import styles from './RitualLayer.module.css';
 
-export interface RitualLayerProps {
-  /** Main app content to render when unlocked */
-  children: ReactNode;
-}
-
 /** Easing curve: easeInOutSine - smooth, ceremonial feeling */
 const EASE_IN_OUT_SINE = [0.37, 0, 0.63, 1] as const;
 
-/** Animation variants for app content enter */
-const appEnterVariants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      delay: 0.7,
-      ease: EASE_IN_OUT_SINE,
-    },
-  },
-};
-
 /**
  * Root-level ritual layer that orchestrates the ceremonial entry experience.
- * Wraps the main app content and conditionally renders the ritual flow or app.
+ * Renders as an overlay that dissolves away when authentication completes.
  *
  * On app launch:
  * - First-time users see the name capture → passcode setup → biometric enrollment flow
  * - Returning users see Face ID prompt or passcode entry depending on settings
- * - Once authenticated, the ritual dissolves and the main app fades in
+ * - Once authenticated, the ritual overlay dissolves and unmounts
+ *
+ * The main app content (AppShell) is rendered separately in App.tsx and mounts
+ * when isAuthenticated becomes true, ensuring page animations start at the right moment.
  */
-export function RitualLayer({ children }: RitualLayerProps): ReactNode {
-  // Lock body scroll during ritual (same as AppShell)
+export function RitualLayer(): ReactNode {
+  // Lock body scroll during ritual
   useBodyScrollLock();
 
   // Initialize splash screen lifecycle
@@ -55,7 +38,6 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
 
   const currentStep = useRitualStore((state) => state.currentStep);
   const isUnlocked = useRitualStore((state) => state.isUnlocked);
-  const contentReady = useRitualStore((state) => state.contentReady);
   const initialize = useRitualStore((state) => state.initialize);
 
   // Initialize ritual flow on mount
@@ -63,83 +45,67 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
     initialize();
   }, [initialize]);
 
-  // Show loading state while initializing
-  if (currentStep === 'idle') {
-    return (
-      <div className={styles.layer}>
-        <div className={styles.loading} />
-      </div>
-    );
-  }
-
   // Render the appropriate step component
   const renderStepContent = (): ReactNode => {
     switch (currentStep) {
       case 'name_capture':
-        return <NameCapture />;
+        return <NameCapture key="name_capture" />;
 
       case 'name_recognition':
-        return <NameRecognition />;
+        return <NameRecognition key="name_recognition" />;
 
       case 'passcode_create':
       case 'passcode_confirm':
-        return <PasscodeSetup />;
+        return <PasscodeSetup key="passcode_setup" />;
 
       case 'biometric_enroll':
-        return <BiometricEnroll />;
+        return <BiometricEnroll key="biometric_enroll" />;
 
       case 'passcode_entry':
-        return <PasscodeEntry />;
+        return <PasscodeEntry key="passcode_entry" />;
 
       case 'biometric_prompt':
-        return <BiometricPrompt />;
+        return <BiometricPrompt key="biometric_prompt" />;
 
       default:
         return null;
     }
   };
 
-  // Show ritual flow
-  if (!isUnlocked && currentStep !== 'threshold') {
-    return (
-      <div className={styles.layer}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            className={styles.ritual}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderStepContent()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    );
-  }
+  // Determine if ritual layer should be visible
+  const isRitualActive = !isUnlocked && currentStep !== 'threshold' && currentStep !== 'unlocked';
+  const isThresholdActive = currentStep === 'threshold';
 
-  // Show threshold transition
-  if (currentStep === 'threshold') {
-    return (
-      <div className={styles.layer}>
-        {/* App content fading in behind */}
+  return (
+    <AnimatePresence>
+      {/* Ritual flow screens (name capture, passcode entry, etc.) */}
+      {isRitualActive && (
         <motion.div
-          className={styles.appContent}
-          variants={appEnterVariants}
-          initial="hidden"
-          animate="visible"
-          onAnimationComplete={() => {
-            // Unlock after app content is visible
-            useRitualStore.getState().unlock();
-            // Signal that content animations can start
-            useRitualStore.getState().setContentReady();
-          }}
+          key="ritual-layer"
+          className={styles.layer}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          {children}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              className={styles.ritual}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {renderStepContent()}
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
-        {/* Threshold overlay dissolving out */}
+      )}
+
+      {/* Threshold dissolve overlay - sits on top while app content fades in behind */}
+      {isThresholdActive && (
         <motion.div
+          key="threshold-overlay"
           className={styles.thresholdOverlay}
           initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 0, scale: 1.05 }}
@@ -147,26 +113,27 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
             duration: THRESHOLD_DURATION_MS / 1000,
             ease: EASE_IN_OUT_SINE,
           }}
+          onAnimationComplete={() => {
+            // Unlock after threshold animation completes
+            useRitualStore.getState().unlock();
+            // Signal that content animations can continue
+            useRitualStore.getState().setContentReady();
+          }}
         />
-      </div>
-    );
-  }
+      )}
 
-  // Unlocked: render main app content
-  return (
-    <motion.div
-      className={styles.layer}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      onAnimationComplete={() => {
-        // Ensure contentReady is set for direct-to-unlocked path (within timeout)
-        if (!contentReady) {
-          useRitualStore.getState().setContentReady();
-        }
-      }}
-    >
-      {children}
-    </motion.div>
+      {/* Loading state while initializing */}
+      {currentStep === 'idle' && (
+        <motion.div
+          key="loading"
+          className={styles.layer}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className={styles.loading} />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

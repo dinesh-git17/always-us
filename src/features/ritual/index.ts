@@ -1,6 +1,5 @@
 // Components
 export { RitualLayer } from './components/RitualLayer';
-export type { RitualLayerProps } from './components/RitualLayer';
 
 export { NameCapture } from './components/NameCapture';
 export type { NameCaptureProps } from './components/NameCapture';
@@ -24,7 +23,7 @@ export { BiometricPrompt } from './components/BiometricPrompt';
 export type { BiometricPromptProps } from './components/BiometricPrompt';
 
 // Store
-export { useRitualStore } from './store/ritualStore';
+export { useRitualStore, selectIsAuthenticated } from './store/ritualStore';
 
 // Hooks
 export { useBiometric } from './hooks/useBiometric';

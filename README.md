@@ -1,20 +1,16 @@
-<div align="center">
-
 # Always Us
 
 ```
-                ╭──────────────────────────────────────────────────────────────╮
-                │                                                              │
-                │      ♡                                                       │
-                │                           Always Us                          │
-                │                                                              │
-                │                     A space made with love.                  │
-                │                     Slowly. Gently. With care.               │
-                │                                                              │
-                ╰──────────────────────────────────────────────────────────────╯
+    ╭──────────────────────────────────────────────────────────────╮
+    │                                                              │
+    │      ♡                                                       │
+    │                     Always Us                                │
+    │                                                              │
+    │              A space made with love.                         │
+    │              Slowly. Gently. With care.                      │
+    │                                                              │
+    ╰──────────────────────────────────────────────────────────────╯
 ```
-
-</div>
 
 <p align="center">
   <img src="https://img.shields.io/badge/romantic_ui-f4e4e6?style=flat-square" alt="Romantic UI" />
@@ -61,13 +57,13 @@ This app has an audience of one.
 
 Since you're here, you might notice some things.
 
-**Every animation was chosen, not defaulted.** There's no single "fade in" across the app. Each page has its own emotional pacing: _reassurance_ for calm pages, _anchor_ for heavy ones, _finale_ for the ending. Some text staggers at 0.25 seconds. Some at 0.8. The difference is felt, not seen.
+**Every animation was chosen, not defaulted.** There's no single "fade in" across the app. Each page has its own emotional pacing—_reassurance_ for calm pages, _anchor_ for heavy ones, _finale_ for the ending. Some text staggers at 0.25 seconds. Some at 0.8. The difference is felt, not seen.
 
 **Typography is treated as emotional architecture.** Serif for titles. Book-weight body text with generous leading. Optical alignment corrections measured in hundredths of an em. The goal was simple: make it feel like holding something real.
 
 **Time is a design material.** The welcome screen takes about seven seconds to fully reveal. That's intentional. Rushing would defeat the purpose. Some experiences deserve patience.
 
-**The app breathes.** After the final words appear, the signature text gently pulses. 1.0 to 0.85 opacity, four-second cycle. Just enough to feel alive without demanding attention.
+**The app breathes.** After the final words appear, the signature text gently pulses—1.0 to 0.85 opacity, four-second cycle—just enough to feel alive without demanding attention.
 
 Is this overengineered for what it is? Absolutely.
 
@@ -79,7 +75,7 @@ Did it deserve it? Also yes.
 
 - This app has more emotional state than Redux.
 - There's a passcode screen that recognizes when the right person opens it.
-- Background music fades in over four seconds at 18% volume. Just enough to sit beneath your thoughts.
+- Background music fades in over four seconds at 18% volume—just enough to sit beneath your thoughts.
 - Quotes rotate each session, so returning feels slightly different every time.
 - The non-refundable clause page exists, and it's legally binding in the heart.
 
@@ -91,7 +87,7 @@ Hi. You probably found this by accident, and that's okay.
 
 This isn't a portfolio piece. I didn't build it to demonstrate skills or hit technical checkboxes. I built it because some things matter enough to build well.
 
-That said, if you're looking at this and wondering whether I care about the details:
+That said—if you're looking at this and wondering whether I care about the details:
 
 Yes. I really do.
 
@@ -103,10 +99,12 @@ Feel free to reach out if you'd like to talk about the serious stuff. But I hope
 
 ---
 
-## ♥️
+## ❤️
 
-> _I chose these words carefully because I chose you carefully._
-> _Not just in moments of closeness, but in intention, in presence, and in heart._
+```
+I chose these words carefully because I chose you carefully.
+Not just in moments of closeness, but in intention, in presence, and in heart.
+```
 
 ---
 

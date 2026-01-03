@@ -35,6 +35,19 @@ const initialState: RitualState = {
  * Design note: Only authentication-related data is persisted.
  * Session state (currentStep, isUnlocked, etc.) resets on each app launch.
  */
+/**
+ * Selector that returns true when the app content should be mounted.
+ * This becomes true when either:
+ * - The threshold transition starts (for onboarding users)
+ * - The user is unlocked (for returning users)
+ *
+ * This allows AppShell to mount exactly when the lock screen begins dissolving,
+ * ensuring page animations start at the right moment.
+ */
+export function selectIsAuthenticated(state: RitualState): boolean {
+  return state.isUnlocked || state.currentStep === 'threshold';
+}
+
 export const useRitualStore = create<RitualStore>()(
   persist(
     (set, get) => ({
@@ -63,6 +76,8 @@ export const useRitualStore = create<RitualStore>()(
           }
         } else {
           // Still within timeout, go directly to app
+          // Note: contentReady is NOT set here - it will be set after mount
+          // to allow animations to transition from hidden to visible
           set({ currentStep: 'unlocked', isUnlocked: true });
         }
       },
