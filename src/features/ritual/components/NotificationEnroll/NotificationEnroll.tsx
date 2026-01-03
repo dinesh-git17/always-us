@@ -7,67 +7,56 @@ import {
   ritualExitVariants,
   EASE_IN_OUT_SINE,
 } from '@lib/motion';
+import { useLocalNotifications } from '@features/notifications';
 import { useRitualStore } from '../../store/ritualStore';
-import { useBiometric } from '../../hooks/useBiometric';
 
-import styles from './BiometricEnroll.module.css';
+import styles from './NotificationEnroll.module.css';
 
-const PROMPT = 'Shall I recognize you next time?';
-const SUBTITLE = 'You can always use your key instead.';
+const PROMPT = 'Can I send you small reminders?';
+const SUBTITLE = 'Gentle words, twice a day.';
 
-export interface BiometricEnrollProps {
+export interface NotificationEnrollProps {
   testId?: string;
 }
 
 /**
- * Face ID enrollment step.
- * Offers to enable biometric authentication for future entries.
- * Skippable - user can always use passcode instead.
+ * Notification enrollment step.
+ * Offers to enable local notifications for daily love reminders.
+ * Skippable - user can decline and still use the app.
  */
-export function BiometricEnroll({ testId = 'biometric-enroll' }: BiometricEnrollProps): ReactNode {
+export function NotificationEnroll({
+  testId = 'notification-enroll',
+}: NotificationEnrollProps): ReactNode {
   const prefersReducedMotion = useReducedMotion();
   const shouldAnimate = !prefersReducedMotion;
 
-  const setBiometricEnabled = useRitualStore((state) => state.setBiometricEnabled);
-  const setStep = useRitualStore((state) => state.setStep);
+  const completeOnboarding = useRitualStore((state) => state.completeOnboarding);
+  const { requestPermission, skip, isRequesting } = useLocalNotifications();
 
-  const { isAvailable, authenticate } = useBiometric();
-
-  // Proceed to notification enrollment
-  const proceedToNotifications = (): void => {
-    setStep('notification_enroll');
+  // Handle "Yes, remind me" - enable notifications
+  const handleEnableNotifications = async (): Promise<void> => {
+    await requestPermission();
+    completeOnboarding();
   };
 
-  // Handle "Yes, please" - enable Face ID
-  const handleEnableBiometric = async (): Promise<void> => {
-    if (isAvailable) {
-      const success = await authenticate();
-      setBiometricEnabled(success);
-    } else {
-      // Biometric not available - skip silently
-      setBiometricEnabled(false);
-    }
-    proceedToNotifications();
-  };
-
-  // Handle "No, I'll use the key" - skip Face ID
-  const handleSkipBiometric = (): void => {
-    setBiometricEnabled(false);
-    proceedToNotifications();
+  // Handle "No, thanks" - skip notifications
+  const handleSkipNotifications = (): void => {
+    skip();
+    completeOnboarding();
   };
 
   return (
     <motion.article
       className={styles.container}
       data-testid={testId}
-      aria-label="Face ID enrollment"
+      aria-label="Notification enrollment"
       variants={ritualExitVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
     >
       <div className={styles.content}>
-        {/* Icon */}
+        {/* Icon - Bell */}
         <motion.div
           className={styles.iconContainer}
           initial={{ opacity: 0, scale: 0.9 }}
@@ -84,13 +73,16 @@ export function BiometricEnroll({ testId = 'biometric-enroll' }: BiometricEnroll
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {/* Face outline */}
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" />
-            {/* Eyes */}
-            <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none" />
-            <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none" />
-            {/* Smile */}
-            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+            {/* Bell body */}
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            {/* Bell clapper */}
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            {/* Small heart inside bell */}
+            <path
+              d="M12 12.5c-.5-.7-1.5-.9-2.2-.4-.6.4-.8 1.2-.5 1.9.2.4.5.7.9 1l1.8 1.4 1.8-1.4c.4-.3.7-.6.9-1 .3-.7.1-1.5-.5-1.9-.7-.5-1.7-.3-2.2.4z"
+              fill="currentColor"
+              stroke="none"
+            />
           </svg>
         </motion.div>
 
@@ -127,14 +119,20 @@ export function BiometricEnroll({ testId = 'biometric-enroll' }: BiometricEnroll
             type="button"
             className={styles.primaryButton}
             onClick={() => {
-              void handleEnableBiometric();
+              void handleEnableNotifications();
             }}
+            disabled={isRequesting}
           >
-            Yes, please
+            {isRequesting ? 'Setting up…' : 'Yes, remind me'}
           </button>
 
-          <button type="button" className={styles.secondaryButton} onClick={handleSkipBiometric}>
-            No, I'll use the key
+          <button
+            type="button"
+            className={styles.secondaryButton}
+            onClick={handleSkipNotifications}
+            disabled={isRequesting}
+          >
+            No, thanks
           </button>
         </motion.div>
       </div>

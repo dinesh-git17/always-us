@@ -19,6 +19,9 @@ export type { KeypadProps } from './components/Keypad';
 export { BiometricEnroll } from './components/BiometricEnroll';
 export type { BiometricEnrollProps } from './components/BiometricEnroll';
 
+export { NotificationEnroll } from './components/NotificationEnroll';
+export type { NotificationEnrollProps } from './components/NotificationEnroll';
+
 export { BiometricPrompt } from './components/BiometricPrompt';
 export type { BiometricPromptProps } from './components/BiometricPrompt';
 

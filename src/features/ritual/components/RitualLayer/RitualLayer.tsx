@@ -9,6 +9,7 @@ import { NameCapture } from '../NameCapture';
 import { NameRecognition } from '../NameRecognition';
 import { PasscodeSetup } from '../PasscodeSetup';
 import { BiometricEnroll } from '../BiometricEnroll';
+import { NotificationEnroll } from '../NotificationEnroll';
 import { PasscodeEntry } from '../PasscodeEntry';
 import { BiometricPrompt } from '../BiometricPrompt';
 
@@ -60,6 +61,9 @@ export function RitualLayer(): ReactNode {
 
       case 'biometric_enroll':
         return <BiometricEnroll key="biometric_enroll" />;
+
+      case 'notification_enroll':
+        return <NotificationEnroll key="notification_enroll" />;
 
       case 'passcode_entry':
         return <PasscodeEntry key="passcode_entry" />;

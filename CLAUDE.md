@@ -306,6 +306,7 @@ src/
 │   │   │   ├── PasscodeDot/          # Single dot with liquid fill animation
 │   │   │   ├── Keypad/               # 3x4 numeric keypad with haptics
 │   │   │   ├── BiometricEnroll/      # First-time: Face ID opt-in
+│   │   │   ├── NotificationEnroll/   # First-time: Notification opt-in
 │   │   │   └── BiometricPrompt/      # Returning: Auto Face ID attempt
 │   │   ├── hooks/
 │   │   │   └── useBiometric.ts       # Capacitor biometric abstraction
@@ -315,6 +316,12 @@ src/
 │   │   │   └── passcodeHash.ts       # Simple hash for storage
 │   │   ├── constants.ts              # EXPECTED_NAME_PREFIX, timeouts
 │   │   ├── types.ts                  # RitualStep, RitualState
+│   │   └── index.ts                  # Public exports
+│   ├── notifications/
+│   │   ├── hooks/
+│   │   │   └── useLocalNotifications.ts  # Permission + scheduling hook
+│   │   ├── constants.ts              # Message pools, schedule times
+│   │   ├── types.ts                  # NotificationState, NotificationSlot
 │   │   └── index.ts                  # Public exports
 │   └── pages/
 │       └── pages.tsx                 # Page registry and renderPages()
@@ -707,6 +714,26 @@ The background audio system provides an ambient emotional undercurrent throughou
 - **Persistence:** Once started, continues playing even if user navigates back to page 0
 - **Asset:** `public/background-music.mp3`
 - **Hook:** `useBackgroundAudio` in `src/hooks/useBackgroundAudio.ts`
+
+**Local Notification System:**
+
+The notification system sends gentle daily reminders at scheduled times.
+
+- **Schedule:** 7:00 AM (morning) and 9:00 PM (evening)
+- **Message Pools:** 8 morning messages, 8 evening messages, 6 flexible messages
+- **Selection:** Random message from pool, weighted toward time-specific messages
+- **Scheduling:** Notifications scheduled 7 days in advance, refreshed on app foreground
+- **Enrollment:** Prompted during onboarding, after Face ID enrollment
+- **Permission:** Uses iOS native notification permission dialog
+- **Persistence:** Notification state (enabled, hasBeenAsked) persisted in localStorage
+- **Hook:** `useLocalNotifications` in `src/features/notifications/hooks/useLocalNotifications.ts`
+- **Enrollment UI:** `NotificationEnroll` component in ritual flow
+
+**Onboarding Flow (First-time users):**
+
+```
+idle → name_capture → name_recognition → passcode_create → passcode_confirm → biometric_enroll → notification_enroll → threshold → unlocked
+```
 
 ### 13.9 Documentation Maintenance
 

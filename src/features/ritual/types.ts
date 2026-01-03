@@ -1,6 +1,6 @@
 /**
  * Ritual step identifiers for the entry flow state machine.
- * First-time users progress: idle → name_capture → name_recognition → passcode_create → passcode_confirm → biometric_enroll → threshold → unlocked
+ * First-time users progress: idle → name_capture → name_recognition → passcode_create → passcode_confirm → biometric_enroll → notification_enroll → threshold → unlocked
  * Returning users progress: idle → biometric_prompt (if enabled) → passcode_entry (fallback) → threshold → unlocked
  */
 export type RitualStep =
@@ -10,6 +10,7 @@ export type RitualStep =
   | 'passcode_create'
   | 'passcode_confirm'
   | 'biometric_enroll'
+  | 'notification_enroll'
   | 'threshold'
   | 'passcode_entry'
   | 'biometric_prompt'
