@@ -13,6 +13,7 @@
 }
 
 .content {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,6 +96,12 @@
 }
 
 .submitHint {
+  /* Position absolutely so it doesn't shift content when appearing */
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--spacing-lg);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: var(--font-family);
   font-size: 0.75rem;
@@ -106,6 +113,7 @@
   cursor: pointer;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
 
   /* Touch target */
   min-height: 44px;
@@ -121,20 +129,4 @@
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
-}
-
-/* Recognition greeting */
-.greeting {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.greetingText {
-  font-family: var(--font-family-serif);
-  font-size: 2rem;
-  font-weight: var(--font-weight-normal);
-  color: var(--color-primary);
-  text-align: center;
-  line-height: 1.3;
 }

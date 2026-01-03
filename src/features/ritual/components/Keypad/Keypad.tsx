@@ -22,8 +22,8 @@ const KEYPAD_ROWS = [
   ['', '0', 'backspace'],
 ] as const;
 
-/** Easing curve for button press animation */
-const EASE_OUT_QUART = [0.25, 1, 0.5, 1] as const;
+/** iOS-style highlight color */
+const HIGHLIGHT_COLOR = 'rgba(139, 41, 66, 0.12)';
 
 /**
  * Numeric keypad for passcode entry.
@@ -46,8 +46,11 @@ export function Keypad({
   };
 
   // Handle key press
-  const handleKeyPress = (key: string): void => {
+  const handleKeyPress = (key: string, event: React.MouseEvent<HTMLButtonElement>): void => {
     if (disabled) return;
+
+    // Blur immediately to prevent focus ring lingering on touch
+    event.currentTarget.blur();
 
     void triggerHaptic();
 
@@ -75,12 +78,20 @@ export function Keypad({
                 key={key}
                 type="button"
                 className={styles.key}
-                onClick={() => {
-                  handleKeyPress(key);
+                onClick={(e) => {
+                  handleKeyPress(key, e);
                 }}
                 disabled={disabled}
-                whileTap={{ scale: 0.92 }}
-                transition={{ duration: 0.1, ease: EASE_OUT_QUART }}
+                initial={{ backgroundColor: 'transparent', scale: 1 }}
+                whileTap={{
+                  backgroundColor: HIGHLIGHT_COLOR,
+                  scale: 0.95,
+                  transition: { duration: 0.01 },
+                }}
+                transition={{
+                  backgroundColor: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
+                  scale: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },
+                }}
                 aria-label={isBackspace ? 'Delete' : key}
               >
                 {isBackspace ? (

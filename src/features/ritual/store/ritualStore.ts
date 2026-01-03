@@ -17,6 +17,7 @@ const initialPersistedState: PersistedRitualState = {
 const initialSessionState = {
   currentStep: 'idle' as RitualStep,
   isUnlocked: false,
+  contentReady: false,
   passcodeAttempt: '',
   passcodeError: false,
   firstPasscodeEntry: '',
@@ -129,10 +130,15 @@ export const useRitualStore = create<RitualStore>()(
         });
       },
 
+      setContentReady: (): void => {
+        set({ contentReady: true });
+      },
+
       lock: (): void => {
         const { biometricEnabled } = get();
         set({
           isUnlocked: false,
+          contentReady: false,
           currentStep: biometricEnabled ? 'biometric_prompt' : 'passcode_entry',
           passcodeAttempt: '',
           passcodeError: false,

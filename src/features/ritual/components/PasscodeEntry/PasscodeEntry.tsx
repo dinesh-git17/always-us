@@ -1,7 +1,12 @@
 import { type ReactNode, useEffect, useCallback, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-import { reassuranceTextVariants, calculateReassuranceDelay } from '@lib/motion';
+import {
+  reassuranceTextVariants,
+  calculateReassuranceDelay,
+  ritualExitVariants,
+  EASE_IN_OUT_SINE,
+} from '@lib/motion';
 import { useRitualStore } from '../../store/ritualStore';
 import { PASSCODE_LENGTH, PASSCODE_ERROR_DELAY_MS } from '../../constants';
 import { PasscodeDot } from '../PasscodeDot';
@@ -10,9 +15,6 @@ import { Keypad } from '../Keypad';
 import styles from './PasscodeEntry.module.css';
 
 const PROMPT = 'Welcome back.';
-
-/** Easing curve: easeInOutSine - ceremonial feeling */
-const EASE_IN_OUT_SINE = [0.37, 0, 0.63, 1] as const;
 
 export interface PasscodeEntryProps {
   testId?: string;
@@ -93,7 +95,15 @@ export function PasscodeEntry({ testId = 'passcode-entry' }: PasscodeEntryProps)
   const greeting = userName ? `Welcome back, ${userName}.` : PROMPT;
 
   return (
-    <article className={styles.container} data-testid={testId} aria-label="Passcode entry">
+    <motion.article
+      className={styles.container}
+      data-testid={testId}
+      aria-label="Passcode entry"
+      variants={ritualExitVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className={styles.content}>
         {/* Greeting */}
         <motion.h1
@@ -139,6 +149,6 @@ export function PasscodeEntry({ testId = 'passcode-entry' }: PasscodeEntryProps)
           />
         </motion.div>
       </div>
-    </article>
+    </motion.article>
   );
 }

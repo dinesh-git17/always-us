@@ -41,6 +41,8 @@ export interface SessionRitualState {
   currentStep: RitualStep;
   /** Whether the app is currently unlocked */
   isUnlocked: boolean;
+  /** Whether content animations should start (set after threshold transition) */
+  contentReady: boolean;
   /** Current passcode entry attempt (0-4 digits) */
   passcodeAttempt: string;
   /** Whether to show passcode error state */
@@ -82,6 +84,8 @@ export interface RitualActions {
   completeOnboarding: () => void;
   /** Unlock the app and transition to main content */
   unlock: () => void;
+  /** Mark content as ready for animations (after threshold transition) */
+  setContentReady: () => void;
   /** Lock the app (typically on background timeout) */
   lock: () => void;
   /** Update the last active timestamp */

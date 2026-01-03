@@ -17,12 +17,12 @@
   align-items: center;
   justify-content: center;
   width: 72px;
-  height: 56px;
+  height: 72px;
   background: transparent;
   border: none;
-  border-radius: 12px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  outline: none;
 
   /* Touch target - minimum 44x44pt */
   min-width: 44px;
@@ -32,14 +32,11 @@
   -webkit-appearance: none;
   appearance: none;
   -webkit-tap-highlight-color: transparent;
-}
 
-.key:hover:not(:disabled) {
-  background-color: rgba(139, 41, 66, 0.05);
-}
-
-.key:active:not(:disabled) {
-  background-color: rgba(139, 41, 66, 0.1);
+  /* Prevent text selection on rapid taps */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
 .key:disabled {
@@ -47,14 +44,20 @@
   cursor: not-allowed;
 }
 
+/* Only show focus ring for keyboard navigation */
 .key:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
+/* Hide focus ring on touch/mouse interaction */
+.key:focus:not(:focus-visible) {
+  outline: none;
+}
+
 .spacer {
   width: 72px;
-  height: 56px;
+  height: 72px;
 }
 
 .digit {

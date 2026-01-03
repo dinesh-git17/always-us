@@ -1,0 +1,26 @@
+.container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  padding-top: calc(var(--spacing-xl) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
+}
+
+.greeting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.greetingText {
+  font-family: var(--font-family-serif);
+  font-size: 2rem;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-primary);
+  text-align: center;
+  line-height: 1.3;
+}

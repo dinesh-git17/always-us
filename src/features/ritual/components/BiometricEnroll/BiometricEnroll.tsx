@@ -1,7 +1,12 @@
 import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-import { ceremonialTextVariants, calculateCeremonialDelay } from '@lib/motion';
+import {
+  ceremonialTextVariants,
+  calculateCeremonialDelay,
+  ritualExitVariants,
+  EASE_IN_OUT_SINE,
+} from '@lib/motion';
 import { useRitualStore } from '../../store/ritualStore';
 import { useBiometric } from '../../hooks/useBiometric';
 
@@ -9,9 +14,6 @@ import styles from './BiometricEnroll.module.css';
 
 const PROMPT = 'Shall I recognize you next time?';
 const SUBTITLE = 'You can always use your key instead.';
-
-/** Easing curve: easeInOutSine - ceremonial feeling */
-const EASE_IN_OUT_SINE = [0.37, 0, 0.63, 1] as const;
 
 export interface BiometricEnrollProps {
   testId?: string;
@@ -50,7 +52,15 @@ export function BiometricEnroll({ testId = 'biometric-enroll' }: BiometricEnroll
   };
 
   return (
-    <article className={styles.container} data-testid={testId} aria-label="Face ID enrollment">
+    <motion.article
+      className={styles.container}
+      data-testid={testId}
+      aria-label="Face ID enrollment"
+      variants={ritualExitVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className={styles.content}>
         {/* Icon */}
         <motion.div
@@ -123,6 +133,6 @@ export function BiometricEnroll({ testId = 'biometric-enroll' }: BiometricEnroll
           </button>
         </motion.div>
       </div>
-    </article>
+    </motion.article>
   );
 }

@@ -12,7 +12,7 @@ export const EXPECTED_NAME_PREFIX = 'carolin';
 export const CANONICAL_NAME = 'Carolina';
 
 /** Delay in milliseconds before transitioning after name recognition */
-export const NAME_RECOGNITION_DELAY_MS = 1500;
+export const NAME_RECOGNITION_DELAY_MS = 3000;
 
 /** Delay in milliseconds before clearing dots after wrong passcode */
 export const PASSCODE_ERROR_DELAY_MS = 500;

@@ -1,14 +1,11 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+import { ritualExitVariants, EASE_IN_OUT_SINE } from '@lib/motion';
 import { useRitualStore } from '../../store/ritualStore';
 import { useBiometric } from '../../hooks/useBiometric';
-import { PasscodeEntry } from '../PasscodeEntry';
 
 import styles from './BiometricPrompt.module.css';
-
-/** Easing curve: easeInOutSine - ceremonial feeling */
-const EASE_IN_OUT_SINE = [0.37, 0, 0.63, 1] as const;
 
 export interface BiometricPromptProps {
   testId?: string;
@@ -16,12 +13,10 @@ export interface BiometricPromptProps {
 
 /**
  * Biometric authentication for returning users.
- * Auto-triggers Face ID on mount. Falls back to PasscodeEntry on failure.
+ * Auto-triggers Face ID on mount. Falls back to passcode_entry step on failure.
+ * Transitions through the store so RitualLayer handles PasscodeEntry rendering.
  */
 export function BiometricPrompt({ testId = 'biometric-prompt' }: BiometricPromptProps): ReactNode {
-  const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [showPasscode, setShowPasscode] = useState(false);
-
   const userName = useRitualStore((state) => state.userName);
   const setStep = useRitualStore((state) => state.setStep);
 
@@ -31,9 +26,8 @@ export function BiometricPrompt({ testId = 'biometric-prompt' }: BiometricPrompt
   useEffect(() => {
     const attemptBiometric = async (): Promise<void> => {
       if (!isAvailable) {
-        // Biometric not available - show passcode
-        setIsAuthenticating(false);
-        setShowPasscode(true);
+        // Biometric not available - transition to passcode entry through store
+        setStep('passcode_entry');
         return;
       }
 
@@ -43,14 +37,12 @@ export function BiometricPrompt({ testId = 'biometric-prompt' }: BiometricPrompt
           // Success - go to threshold
           setStep('threshold');
         } else {
-          // Failed - show passcode
-          setIsAuthenticating(false);
-          setShowPasscode(true);
+          // Failed - transition to passcode entry through store
+          setStep('passcode_entry');
         }
       } catch {
-        // Error - show passcode
-        setIsAuthenticating(false);
-        setShowPasscode(true);
+        // Error - transition to passcode entry through store
+        setStep('passcode_entry');
       }
     };
 
@@ -64,14 +56,18 @@ export function BiometricPrompt({ testId = 'biometric-prompt' }: BiometricPrompt
     };
   }, [authenticate, isAvailable, setStep]);
 
-  // Show passcode entry if biometric failed
-  if (showPasscode) {
-    return <PasscodeEntry />;
-  }
-
   // Show loading/authenticating state
+  // PasscodeEntry is rendered by RitualLayer when step changes to 'passcode_entry'
   return (
-    <article className={styles.container} data-testid={testId} aria-label="Face ID authentication">
+    <motion.article
+      className={styles.container}
+      data-testid={testId}
+      aria-label="Face ID authentication"
+      variants={ritualExitVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className={styles.content}>
         {/* Pulsing indicator */}
         <motion.div
@@ -116,17 +112,15 @@ export function BiometricPrompt({ testId = 'biometric-prompt' }: BiometricPrompt
           {userName ? `Hi, ${userName}.` : 'Welcome back.'}
         </motion.p>
 
-        {isAuthenticating && (
-          <motion.p
-            className={styles.status}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            transition={{ duration: 0.5, delay: 0.5, ease: EASE_IN_OUT_SINE }}
-          >
-            Looking for you...
-          </motion.p>
-        )}
+        <motion.p
+          className={styles.status}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.5, ease: EASE_IN_OUT_SINE }}
+        >
+          Looking for you...
+        </motion.p>
       </div>
-    </article>
+    </motion.article>
   );
 }

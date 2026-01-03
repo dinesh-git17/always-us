@@ -378,6 +378,37 @@ export const breathingVariants: Variants = {
   },
 };
 
+/** Easing curve: easeInOutSine - ceremonial, soft feeling */
+export const EASE_IN_OUT_SINE = [0.37, 0, 0.63, 1] as const;
+
+/**
+ * Shared exit animation variants for ritual components.
+ * Creates a subtle shrink and fade for smooth transitions between ritual steps.
+ * Duration matches the parent AnimatePresence exit for coordinated timing.
+ */
+export const ritualExitVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.98,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.37, 0, 0.63, 1], // easeInOutSine
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.25,
+      ease: [0.37, 0, 0.63, 1], // easeInOutSine
+    },
+  },
+};
+
 /**
  * Calculates animation delay for a text element using a given config.
  *

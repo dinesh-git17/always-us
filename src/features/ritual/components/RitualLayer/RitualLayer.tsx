@@ -6,6 +6,7 @@ import { useSplashScreen } from '@hooks/useSplashScreen';
 import { useRitualStore } from '../../store/ritualStore';
 import { THRESHOLD_DURATION_MS } from '../../constants';
 import { NameCapture } from '../NameCapture';
+import { NameRecognition } from '../NameRecognition';
 import { PasscodeSetup } from '../PasscodeSetup';
 import { BiometricEnroll } from '../BiometricEnroll';
 import { PasscodeEntry } from '../PasscodeEntry';
@@ -54,6 +55,7 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
 
   const currentStep = useRitualStore((state) => state.currentStep);
   const isUnlocked = useRitualStore((state) => state.isUnlocked);
+  const contentReady = useRitualStore((state) => state.contentReady);
   const initialize = useRitualStore((state) => state.initialize);
 
   // Initialize ritual flow on mount
@@ -77,9 +79,7 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
         return <NameCapture />;
 
       case 'name_recognition':
-        // Name recognition is handled within NameCapture component
-        // This state is transitional, so show nothing (NameCapture handles the greeting)
-        return null;
+        return <NameRecognition />;
 
       case 'passcode_create':
       case 'passcode_confirm':
@@ -132,6 +132,8 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
           onAnimationComplete={() => {
             // Unlock after app content is visible
             useRitualStore.getState().unlock();
+            // Signal that content animations can start
+            useRitualStore.getState().setContentReady();
           }}
         >
           {children}
@@ -157,6 +159,12 @@ export function RitualLayer({ children }: RitualLayerProps): ReactNode {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
+      onAnimationComplete={() => {
+        // Ensure contentReady is set for direct-to-unlocked path (within timeout)
+        if (!contentReady) {
+          useRitualStore.getState().setContentReady();
+        }
+      }}
     >
       {children}
     </motion.div>

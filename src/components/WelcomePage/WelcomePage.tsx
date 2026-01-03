@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
 
-import { useAppReady } from '@hooks/useSplashScreen';
+import { useRitualStore } from '@features/ritual/store/ritualStore';
 
 import styles from './WelcomePage.module.css';
 
@@ -82,11 +82,11 @@ export function WelcomePage({ testId = 'page-0' }: WelcomePageProps): ReactNode 
   // Use Framer Motion's built-in hook for reduced motion detection
   const prefersReducedMotion = useReducedMotion();
 
-  // Wait for splash screen to hide before starting animations
-  const isAppReady = useAppReady();
+  // Wait for ritual transition to complete before starting animations
+  const contentReady = useRitualStore((state) => state.contentReady);
 
-  // Determine animation state: start when app is ready (splash hidden)
-  const animationState = prefersReducedMotion || isAppReady ? 'visible' : 'hidden';
+  // Determine animation state: start only when content is ready (after threshold transition)
+  const animationState = prefersReducedMotion || contentReady ? 'visible' : 'hidden';
 
   return (
     <article
