@@ -1,197 +1,115 @@
-# Always-Us
+<div align="center">
 
-A React + TypeScript mobile application built with Capacitor for iOS.
-
-## Prerequisites
-
-- **Node.js**: v24.x or higher (see `.nvmrc`)
-- **npm**: v10.x or higher
-- **Xcode**: 15.x or higher (for iOS development)
-- **CocoaPods**: For iOS dependency management
-
-## Quick Start
-
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Sync with iOS
-npm run cap:sync
-
-# Open in Xcode
-npm run cap:ios
-```
-
-## Project Structure
+# Always Us
 
 ```
-always-us/
-├── ios/                    # Native iOS project (Capacitor)
-├── public/                 # Static assets
-├── src/
-│   ├── app/               # App-level configuration, providers, routing
-│   ├── assets/            # Images, fonts, and static files
-│   ├── components/        # Shared/reusable UI components
-│   ├── config/            # App configuration and constants
-│   ├── features/          # Feature-based modules (domain logic + views)
-│   ├── hooks/             # Global custom React hooks
-│   ├── lib/               # Third-party library wrappers
-│   ├── styles/            # Global styles and CSS variables
-│   ├── types/             # Shared TypeScript type definitions
-│   └── utils/             # Utility functions and helpers
-├── .husky/                # Git hooks configuration
-├── capacitor.config.ts    # Capacitor configuration
-├── eslint.config.js       # ESLint configuration
-├── tsconfig.json          # TypeScript configuration
-└── vite.config.ts         # Vite bundler configuration
+╭──────────────────────────────────────────────────────────────╮
+│                                                              │
+│      ♡                                                       │
+│                     Always Us                                │
+│                                                              │
+│              A space made with love.                         │
+│              Slowly. Gently. With care.                      │
+│                                                              │
+╰──────────────────────────────────────────────────────────────╯
 ```
 
-### Directory Details
+</div>
 
-| Directory     | Purpose                                                                    |
-| ------------- | -------------------------------------------------------------------------- |
-| `app/`        | Application shell, providers (context), and routing configuration          |
-| `assets/`     | Static assets that get processed by the bundler                            |
-| `components/` | Shared UI components used across multiple features                         |
-| `config/`     | Environment-specific configuration and constants                           |
-| `features/`   | Self-contained feature modules with their own components, hooks, and logic |
-| `hooks/`      | Reusable React hooks that aren't feature-specific                          |
-| `lib/`        | Wrappers around third-party libraries for easier mocking and replacement   |
-| `styles/`     | Global CSS, CSS variables, and style utilities                             |
-| `types/`      | Shared TypeScript interfaces and type definitions                          |
-| `utils/`      | Pure utility functions (formatters, validators, etc.)                      |
+<p align="center">
+  <img src="https://img.shields.io/badge/romantic_ui-f4e4e6?style=flat-square" alt="Romantic UI" />
+  <img src="https://img.shields.io/badge/emotion--driven_motion-e8d5d8?style=flat-square" alt="Emotion-Driven Motion" />
+  <img src="https://img.shields.io/badge/built_with_love-8b2942?style=flat-square&labelColor=8b2942&color=8b2942" alt="Built With Love" />
+  <img src="https://img.shields.io/badge/no_analytics-5a524c?style=flat-square" alt="No Analytics" />
+  <img src="https://img.shields.io/badge/just_vibes-b76e79?style=flat-square" alt="Just Vibes" />
+</p>
 
-## Available Scripts
+---
 
-| Command                | Description                          |
-| ---------------------- | ------------------------------------ |
-| `npm run dev`          | Start Vite development server        |
-| `npm run build`        | Build for production                 |
-| `npm run lint`         | Run ESLint                           |
-| `npm run lint:fix`     | Run ESLint with auto-fix             |
-| `npm run format`       | Format code with Prettier            |
-| `npm run format:check` | Check code formatting                |
-| `npm run type-check`   | Run TypeScript type checking         |
-| `npm run cap:sync`     | Build and sync with native platforms |
-| `npm run cap:ios`      | Open iOS project in Xcode            |
+This is not a normal app.
 
-## Code Quality
+It's a love letter, wrapped in code, delivered as an experience. A 14-page journey through words that were chosen carefully, revealed slowly, and meant completely.
 
-### Linting & Formatting
+There's no dashboard. No notifications. No engagement metrics. Just warmth, typography, and the deliberate passage of time.
 
-- **ESLint**: Strict TypeScript rules with React Hooks enforcement
-- **Prettier**: Consistent code formatting
-- **Husky + lint-staged**: Pre-commit hooks for automated checks
+---
 
-### TypeScript Standards
+## What This Is
 
-- Strict mode enabled
-- No implicit `any` types allowed
-- All function parameters and returns must be typed
-- Prefer type imports: `import type { Foo } from './foo'`
+**Always Us** is a personal app I built for someone I love.
 
-### Naming Conventions
+It's a gift. Not a product, not a startup, not a portfolio piece. It happens to be native iOS, built with React and TypeScript and Capacitor. It happens to use Framer Motion for animations. It happens to be engineered with real care.
 
-| Type             | Convention                  | Example                   |
-| ---------------- | --------------------------- | ------------------------- |
-| Components       | PascalCase                  | `UserProfile.tsx`         |
-| Hooks            | camelCase with `use` prefix | `useAuth.ts`              |
-| Utilities        | camelCase                   | `formatDate.ts`           |
-| Types/Interfaces | PascalCase (no `I` prefix)  | `UserData`, `ButtonProps` |
-| Folders          | kebab-case                  | `user-profile/`           |
-| CSS files        | camelCase or kebab-case     | `button.module.css`       |
+But none of that is the point.
 
-## Git Workflow
+The point is the words inside.
 
-### Branching Strategy
+---
 
-- Feature branches: `feat/feature-name`
-- Bug fixes: `fix/bug-description`
-- Chores: `chore/task-description`
-- Documentation: `docs/doc-description`
+## What This Isn't
 
-### Commit Messages
+- A side project to impress anyone
+- Something optimized for conversion
+- Open for contributions (it's finished)
+- Built to scale
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
+This app has an audience of one.
 
-```
-feat: add user authentication
-fix: resolve login button state issue
-chore: update dependencies
-docs: add API documentation
-```
+---
 
-## iOS Development
+## On Craft
 
-### Building for iOS
+Since you're here, you might notice some things.
 
-```bash
-# 1. Build the web app
-npm run build
+**Every animation was chosen, not defaulted.** There's no single "fade in" across the app. Each page has its own emotional pacing: _reassurance_ for calm pages, _anchor_ for heavy ones, _finale_ for the ending. Some text staggers at 0.25 seconds. Some at 0.8. The difference is felt, not seen.
 
-# 2. Sync with iOS
-npx cap sync ios
+**Typography is treated as emotional architecture.** Serif for titles. Book-weight body text with generous leading. Optical alignment corrections measured in hundredths of an em. The goal was simple: make it feel like holding something real.
 
-# 3. Open in Xcode
-npx cap open ios
+**Time is a design material.** The welcome screen takes about seven seconds to fully reveal. That's intentional. Rushing would defeat the purpose. Some experiences deserve patience.
 
-# 4. Build and run in Simulator (via Xcode)
-```
+**The app breathes.** After the final words appear, the signature text gently pulses. 1.0 to 0.85 opacity, four-second cycle. Just enough to feel alive without demanding attention.
 
-### Configuration
+Is this overengineered for what it is? Absolutely.
 
-The iOS app is configured in `capacitor.config.ts`:
+Did it deserve it? Also yes.
 
-- **App ID**: `com.alwaysus.app`
-- **App Name**: `Always-Us`
-- **Web Directory**: `dist`
+---
 
-## Path Aliases
+## Small Joys
 
-Import aliases are configured for cleaner imports:
+- This app has more emotional state than Redux.
+- There's a passcode screen that recognizes when the right person opens it.
+- Background music fades in over four seconds at 18% volume. Just enough to sit beneath your thoughts.
+- Quotes rotate each session, so returning feels slightly different every time.
+- The non-refundable clause page exists, and it's legally binding in the heart.
 
-```typescript
-// Instead of
-import { Button } from '../../../components/Button';
+---
 
-// Use
-import { Button } from '@components/Button';
-```
+## A Note for Recruiters
 
-Available aliases:
+Hi. You probably found this by accident, and that's okay.
 
-- `@app/*` → `src/app/*`
-- `@assets/*` → `src/assets/*`
-- `@components/*` → `src/components/*`
-- `@config/*` → `src/config/*`
-- `@features/*` → `src/features/*`
-- `@hooks/*` → `src/hooks/*`
-- `@lib/*` → `src/lib/*`
-- `@utils/*` → `src/utils/*`
-- `@types/*` → `src/types/*`
-- `@styles/*` → `src/styles/*`
+This isn't a portfolio piece. I didn't build it to demonstrate skills or hit technical checkboxes. I built it because some things matter enough to build well.
 
-## Environment Variables
+That said, if you're looking at this and wondering whether I care about the details:
 
-Environment variables are managed through `.env` files:
+Yes. I really do.
 
-- `.env` - Default environment variables
-- `.env.local` - Local overrides (git-ignored)
-- `.env.development` - Development-specific
-- `.env.production` - Production-specific
+The TypeScript is strict. The accessibility is considered. The animations are intentional. The code is clean not because someone might read it, but because building things carefully is how I work.
 
-Access in code:
+I also build serious production software. This one just happens to be personal.
 
-```typescript
-const apiUrl = import.meta.env.VITE_API_URL;
-```
+Feel free to reach out if you'd like to talk about the serious stuff. But I hope you can appreciate why this README doesn't have deployment instructions.
 
-## License
+---
 
-Private - All rights reserved.
+## ♥️
+
+> _I chose these words carefully because I chose you carefully._
+> _Not just in moments of closeness, but in intention, in presence, and in heart._
+
+---
+
+<p align="center">
+  <em>Some love stories begin quietly, and mean everything.</em>
+</p>
