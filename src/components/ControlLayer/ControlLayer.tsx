@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
-import { useNavigation } from '@features/navigation';
+import { useNavigation, FINAL_PAGE_INDEX } from '@features/navigation';
 
 import styles from './ControlLayer.module.css';
 
@@ -41,9 +41,13 @@ export interface ControlLayerProps {
 /**
  * Transparent overlay providing subtle navigation hints and tap zones.
  * Displays chevron indicators with heartbeat pulse on Next arrow after idle timeout.
+ * Hidden on the final "I love you" page to create intimate, UI-free space.
  */
 export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
-  const { next, prev, canGoNext, canGoPrev } = useNavigation();
+  const { next, prev, canGoNext, canGoPrev, currentStepIndex } = useNavigation();
+
+  // Hide controls entirely on the final page for intimate, UI-free destination
+  const isFinalPage = currentStepIndex === FINAL_PAGE_INDEX;
   const [isIdle, setIsIdle] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -97,6 +101,11 @@ export function ControlLayer({ onNavigate }: ControlLayerProps): ReactNode {
       onNavigate?.('prev');
     }
   }, [canGoPrev, prev, onNavigate]);
+
+  // Don't render any controls on the final page
+  if (isFinalPage) {
+    return null;
+  }
 
   return (
     <div className={styles.controlLayer} aria-hidden="true">

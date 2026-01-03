@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { useNavigation } from '@features/navigation';
+import { useNavigation, FINAL_PAGE_INDEX } from '@features/navigation';
 import { fadeInVariants } from '@lib/motion';
 
 import styles from './ProgressIndicator.module.css';
@@ -14,7 +14,7 @@ export interface ProgressIndicatorProps {
 /**
  * Subtle progress bar showing current position in the journey.
  * Positioned at the top of the app, below the status bar safe area.
- * Hidden on the welcome page (step 0) to reinforce the timeless, unhurried feel.
+ * Hidden on the welcome page (step 0) and final page to create intimate bookends.
  * Fades in smoothly when transitioning from page 0 to page 1.
  */
 export function ProgressIndicator({ className }: ProgressIndicatorProps): ReactNode {
@@ -29,8 +29,9 @@ export function ProgressIndicator({ className }: ProgressIndicatorProps): ReactN
   const ariaLabel = `Step ${String(currentStep)} of ${String(totalSteps)}`;
   const widthStyle = `${String(progressPercent)}%`;
 
-  // Show progress indicator only after welcome page (step 0)
-  const isVisible = currentStepIndex > 0;
+  // Show progress indicator only after welcome page (step 0) and before final page
+  // Welcome and final "I love you" pages have no progress bar for intimate bookends
+  const isVisible = currentStepIndex > 0 && currentStepIndex < FINAL_PAGE_INDEX;
 
   return (
     <AnimatePresence>

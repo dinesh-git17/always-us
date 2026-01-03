@@ -9,16 +9,18 @@ import { EverydayPage } from '@components/EverydayPage';
 import { FinalPage } from '@components/FinalPage';
 import { HardDaysPage } from '@components/HardDaysPage';
 import { IntentPage } from '@components/IntentPage';
+import { LovePage } from '@components/LovePage';
 import { NonRefundablePage } from '@components/NonRefundablePage';
 import { Page } from '@components/Page';
 import { PromisesPage } from '@components/PromisesPage';
 import { SignaturesPage } from '@components/SignaturesPage';
 import { TrustPage } from '@components/TrustPage';
 import { WelcomePage } from '@components/WelcomePage';
+import { WheneverPage } from '@components/WheneverPage';
 import type { PageConfig } from '@features/navigation';
 
 /**
- * Configuration for all 14 journey pages.
+ * Configuration for all 16 journey pages.
  * Content is placeholder text until Phase 2 implementation.
  *
  * quoteCategory: Controls which epigraph quotes appear on each page.
@@ -137,6 +139,21 @@ export const pageConfigs: PageConfig[] = [
     quoteCategory: 'final_words',
     epigraphDelay: 7.95, // FINALE: 7 elements with signature, last delay 6.15s + 1.5s + 0.3s
   },
+  {
+    id: 'whenever',
+    title: 'Whenever You Need This',
+    subtitle: '',
+    testId: 'page-14',
+    quoteCategory: 'whenever_you_need_this',
+    epigraphDelay: 4.85, // TIMELESS: 6 elements, last delay 3.35s + 1.2s + 0.3s
+  },
+  {
+    id: 'love',
+    title: 'I love you',
+    subtitle: '',
+    testId: 'page-15',
+    quoteCategory: null, // No epigraph - intimate close
+  },
 ];
 
 /**
@@ -213,6 +230,16 @@ export function renderPages(): ReactElement[] {
     // Final page ("Final Words") uses the slowest finale animation timing
     if (config.id === 'finale') {
       return <FinalPage key={config.id} testId={config.testId} />;
+    }
+
+    // Whenever page ("Whenever You Need This") - transitional page before intimate close
+    if (config.id === 'whenever') {
+      return <WheneverPage key={config.id} testId={config.testId} />;
+    }
+
+    // Love page ("I love you, Carolina.") - the final, intimate destination
+    if (config.id === 'love') {
+      return <LovePage key={config.id} testId={config.testId} />;
     }
 
     return (

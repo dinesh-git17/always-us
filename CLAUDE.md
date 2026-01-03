@@ -281,11 +281,14 @@ src/
 │   ├── SignaturesPage/              # Page 11: "Signatures & Sealing"
 │   ├── EternalValidityPage/         # Page 12: "Eternal Validity"
 │   ├── FinalPage/                   # Page 13: "Final Words"
+│   ├── WheneverPage/                # Page 14: "Whenever You Need This"
+│   ├── LovePage/                    # Page 15: "I love you, Carolina."
 │   ├── ControlLayer/                # Navigation tap zones with chevrons
 │   ├── EpigraphLayer/               # Rotating quote overlay at bottom of pages
 │   ├── ErrorBoundary.tsx            # Error handling wrapper
 │   ├── Page/                        # Generic page wrapper
 │   ├── ProgressIndicator/           # Top progress bar (hidden on page 0)
+│   ├── SwipeHint/                   # Animated swipe indicator on Welcome page
 │   └── WelcomePage/                 # Page 1: Intro with staggered text
 ├── features/
 │   ├── navigation/
@@ -360,8 +363,8 @@ src/
 
 ```typescript
 interface NavigationContext {
-  currentStepIndex: number; // 0-13
-  totalSteps: number; // 14
+  currentStepIndex: number; // 0-15
+  totalSteps: number; // 16
   canGoNext: boolean;
   canGoPrev: boolean; // false for steps 0-2 (opening narrative)
   isComplete: boolean;
@@ -374,7 +377,8 @@ interface NavigationContext {
 
 **Navigation Constants** (`src/features/navigation/constants.ts`):
 
-- `TOTAL_STEPS = 14`
+- `TOTAL_STEPS = 16`
+- `FINAL_PAGE_INDEX = 15` — The "I love you" page where UI elements are hidden
 - `NO_BACK_UNTIL_STEP = 1` — Backward navigation disabled only from page 1 to page 0
 - `SWIPE_THRESHOLD_DISTANCE = 50` — Minimum swipe distance in pixels
 - `SWIPE_EDGE_ZONE = 20` — Edge zone where swipe is ignored (iOS back gesture)
@@ -651,6 +655,8 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 - [x] Page 11: "Signatures & Sealing" (SignaturesPage) — Ceremonial animation (0.8s stagger, easeInOutSine), centered, pause has +1.0s beat
 - [x] Page 12: "Eternal Validity" (EternalValidityPage) — Timeless animation (0.7s stagger, easeInOutQuad), centered
 - [x] Page 13: "Final Words" (FinalPage) — Finale animation (0.8s stagger, easeInOutSine), centered, signature has +1.5s beat
+- [x] Page 14: "Whenever You Need This" (WheneverPage) — Timeless animation (0.7s stagger, easeInOutQuad), centered
+- [x] Page 15: "I love you, Carolina." (LovePage) — Slow entrance + breathing animation, centered, no progress bar or controls
 
 **All pages implemented.**
 
@@ -666,9 +672,11 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 - Page 11 (Sealing) uses `ceremonialTextVariants` with breathing animation on pause element
 - Page 12 (Eternal) uses `timelessTextVariants` with `calculateTimelessDelay` for enduring permanence
 - Page 13 (Final) uses `finaleTextVariants` with breathing animation on signature element
+- Page 14 (Whenever) uses `timelessTextVariants` for enduring, transitional feel
+- Page 15 (Love) uses custom slow entrance (2s fade) + breathing animation, no title/subtitle
 - All content pages use center-aligned text (title, subtitle, body)
 - Page 0 (Welcome) is unique with its own animation style
-- WelcomePage and SignaturesPage use optical vertical centering (~45% from top)
+- WelcomePage, SignaturesPage, and LovePage use optical vertical centering (~45% from top)
 - If prompt says otherwise or strays from consistency, stop and ask to confirm
 
 **Typography Polish:**
@@ -682,21 +690,34 @@ export function ExamplePage({ testId = 'page-X' }: ExamplePageProps): ReactNode 
 **Breathing Animation:**
 
 - `breathingVariants` provides subtle opacity loop (1.0 → 0.85 → 1.0 over 4s)
-- Applied to SignaturesPage pause element and FinalPage signature element
+- Applied to SignaturesPage pause element, FinalPage signature element, and LovePage declaration
 - Starts after entrance animation completes to signal app is "alive"
 - Respects prefers-reduced-motion preference
 
 **Navigation Rules:**
 
 - Page 0 → 1: Forward only (Welcome is one-way entry point)
-- Pages 1+: Full bidirectional navigation enabled
+- Pages 1–14: Full bidirectional navigation enabled
+- Page 15: Progress bar and control layer hidden (intimate UI-free destination)
+- Swipe navigation still works on Page 15 for returning to previous pages
+
+**Swipe Hint (Welcome Page):**
+
+A subtle hand swipe indicator appears on the Welcome page to teach the swipe gesture.
+
+- **Timing:** Appears ~10.6s after page load (after epigraph settles + 1.5s buffer)
+- **Animation:** PiHandSwipeLeft icon slides left 35px, repeats 3 times, then fades out
+- **Opacity:** 40% for subtle, non-intrusive appearance
+- **Position:** Bottom-center, same level as chevron navigation arrows
+- **Accessibility:** Hidden when prefers-reduced-motion is enabled
+- **Behavior:** Disappears immediately when user navigates away
 
 **Epigraph System:**
 
 The Epigraph system displays rotating romantic quotes at the bottom of specific pages. Quotes are selected randomly once per app session and remain consistent for that session.
 
-- **Included Pages:** Welcome (0), We Chose Each Other (1), Where It All Began (2), Why I Made This (3), What This Means to Us (4), What I Promise You (5), On the Hard Days (7), The Non-Refundable Clause (10), Signatures & Sealing (11), Eternal Validity (12), Final Words (13)
-- **Excluded Pages:** How I Show Up Every Day (6), Trust and Loyalty (8), What We're Building Together (9)
+- **Included Pages:** Welcome (0), We Chose Each Other (1), Where It All Began (2), Why I Made This (3), What This Means to Us (4), What I Promise You (5), On the Hard Days (7), The Non-Refundable Clause (10), Signatures & Sealing (11), Eternal Validity (12), Final Words (13), Whenever You Need This (14)
+- **Excluded Pages:** How I Show Up Every Day (6), Trust and Loyalty (8), What We're Building Together (9), I love you (15)
 - **Animation:** Ethereal fade-in with y-offset drift (duration: 1.2s, easeInOutSine)
 - **Timing:** Each page has a custom `epigraphDelay` calculated as (last element delay + animation duration + 0.3s buffer) to ensure quotes appear after page content finishes animating
 - **Typography:** Inter, Italic, Light weight (300), 0.75rem, muted color

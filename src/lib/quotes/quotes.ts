@@ -16,7 +16,8 @@ export type QuoteCategory =
   | 'non_refundable_clause'
   | 'signatures_and_sealing'
   | 'eternal_validity'
-  | 'final_words';
+  | 'final_words'
+  | 'whenever_you_need_this';
 
 /** Map of quote categories to their quote arrays */
 export const QUOTES: Record<QuoteCategory, readonly string[]> = {
@@ -106,6 +107,16 @@ export const QUOTES: Record<QuoteCategory, readonly string[]> = {
     "I'm still choosing you.",
     'This love stays.',
   ],
+
+  whenever_you_need_this: [
+    'You can come back to this whenever your heart feels tired.',
+    "Some things don't ask for urgency. They just wait.",
+    "This space stays gentle, no matter how long it's been.",
+    "You don't have to remember everything. This will.",
+    'Whenever you need calm, this is here.',
+    'Nothing here fades with time.',
+    "You're always welcome back.",
+  ],
 } as const;
 
 /** Map page IDs to quote categories */
@@ -124,6 +135,8 @@ export const PAGE_TO_QUOTE_CATEGORY: Record<string, QuoteCategory | null> = {
   signatures: 'signatures_and_sealing',
   'eternal-validity': 'eternal_validity',
   finale: 'final_words',
+  whenever: 'whenever_you_need_this',
+  love: null, // Final page - no epigraph, just the declaration
 };
 
 /** Type for session quote selections - one quote index per category */

@@ -1,5 +1,8 @@
 /** Total number of steps in the journey */
-export const TOTAL_STEPS = 14;
+export const TOTAL_STEPS = 16;
+
+/** The final page index where progress bar and controls are hidden */
+export const FINAL_PAGE_INDEX = 15;
 
 /** Storage key for persisting journey state */
 export const JOURNEY_STORAGE_KEY = 'journey-state';

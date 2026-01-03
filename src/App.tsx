@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect } from 'react';
 
 import { AppShell } from '@app/AppShell';
-import { ProgressIndicator, ControlLayer, EpigraphLayer } from '@components/index';
+import { ProgressIndicator, ControlLayer, EpigraphLayer, SwipeHint } from '@components/index';
 import { DeckNavigator } from '@features/navigation';
 import { renderPages } from '@features/pages';
 import { RitualLayer, useRitualStore, selectIsAuthenticated } from '@features/ritual';
@@ -53,6 +53,7 @@ function App(): ReactNode {
           overlay={
             <>
               <EpigraphLayer />
+              <SwipeHint />
               <ControlLayer />
             </>
           }

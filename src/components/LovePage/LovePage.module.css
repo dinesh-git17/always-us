@@ -1,0 +1,59 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  padding-left: calc(var(--spacing-lg) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--spacing-lg) + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
+  /* No scrolling needed - single centered element */
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  flex: 1;
+  /* Optical bias: slight upward shift for better visual balance */
+  margin-top: -5vh;
+}
+
+/* The declaration: Playfair Display, Primary Color, elegant and breathing */
+.declaration {
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-medium);
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+/* Accessibility: respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .declaration {
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments for smaller devices (iPhone SE) */
+@media screen and (max-height: 667px) {
+  .declaration {
+    font-size: 1.5rem;
+  }
+}
+
+/* Larger displays can have slightly bigger text */
+@media screen and (min-height: 800px) {
+  .declaration {
+    font-size: 2rem;
+  }
+}

@@ -22,4 +22,4 @@ export type { DeckNavigatorProps } from './components/DeckNavigator';
 export type { UseSwipeGestureOptions, SwipeHandlers } from './hooks/useSwipeGesture';
 
 // Constants
-export { TOTAL_STEPS, JOURNEY_STORAGE_KEY } from './constants';
+export { TOTAL_STEPS, JOURNEY_STORAGE_KEY, FINAL_PAGE_INDEX } from './constants';
