@@ -6,10 +6,10 @@
                 ╭──────────────────────────────────────────────────────────────╮
                 │                                                              │
                 │      ♡                                                       │
-                │                     Always Us                                │
+                │                           Always Us                          │
                 │                                                              │
-                │              A space made with love.                         │
-                │              Slowly. Gently. With care.                      │
+                │                     A space made with love.                  │
+                │                     Slowly. Gently. With care.               │
                 │                                                              │
                 ╰──────────────────────────────────────────────────────────────╯
 ```
